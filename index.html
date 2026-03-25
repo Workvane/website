@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workvane — Bridge your ticketing and source code tools</title>
+  <meta name="description" content="Workvane connects your ticketing tools and source code platforms through Winds — purpose-built integrations that give you a unified view of what's open, what's stale, and what's out of sync." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0a0a0f;
+      --bg-card: #111118;
+      --bg-card-hover: #15151e;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.06);
+      --border-hover: rgba(14, 165, 233, 0.25);
+      --brand-from: #0ea5e9;
+      --brand-to: #14b8a6;
+      --gradient: linear-gradient(135deg, #0ea5e9, #14b8a6);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Layout helpers ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .text-col {
+      max-width: 60ch;
+    }
+
+    /* ── Gradient text ── */
+    .grad {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 18px 0;
+      background: rgba(10, 10, 15, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav .inner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .nav-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .nav-name {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    /* ── Scroll-reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding: 160px 0 120px;
+      text-align: center;
+    }
+
+    .hero-logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      line-height: 1;
+      margin: 0 auto 28px;
+      box-shadow: 0 0 40px rgba(14, 165, 233, 0.18);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 3.6rem);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .hero-tagline {
+      font-size: clamp(1.1rem, 3vw, 1.35rem);
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      margin-bottom: 24px;
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 52ch;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      border-radius: 10px;
+      background: var(--gradient);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      text-decoration: none;
+      transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 20px rgba(14, 165, 233, 0.2);
+    }
+
+    .hero-cta:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 28px rgba(14, 165, 233, 0.32);
+    }
+
+    /* ── Section labels ── */
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brand-from);
+      margin-bottom: 14px;
+    }
+
+    /* ── Winds ── */
+    .winds {
+      padding: 80px 0 100px;
+      border-top: 1px solid var(--border);
+    }
+
+    .winds-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .winds-header h2 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .winds-header p {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 50ch;
+      margin: 0 auto;
+    }
+
+    .winds-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .wind-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      border-radius: 40px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--muted);
+      transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+    }
+
+    .wind-pill.available {
+      border-color: rgba(14, 165, 233, 0.3);
+      color: var(--text);
+      background: rgba(14, 165, 233, 0.05);
+    }
+
+    .wind-pill.available:hover {
+      border-color: rgba(14, 165, 233, 0.5);
+      background: rgba(14, 165, 233, 0.09);
+    }
+
+    .wind-badge {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 20px;
+    }
+
+    .wind-badge.now {
+      background: rgba(14, 165, 233, 0.12);
+      color: var(--brand-from);
+    }
+
+    .wind-badge.soon {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--muted);
+    }
+
+    .wind-sep {
+      color: var(--muted);
+      font-size: 1rem;
+      font-weight: 300;
+    }
+
+    /* ── Features ── */
+    .features {
+      padding: 100px 0;
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .features-header h2 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .features-header p {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 48ch;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+    }
+
+    .feature-card:hover {
+      border-color: var(--border-hover);
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+    }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(14, 165, 233, 0.08);
+      border: 1px solid rgba(14, 165, 233, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      font-size: 18px;
+    }
+
+    .feature-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── How it works ── */
+    .how {
+      padding: 100px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .how-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .how-header h2 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .how-header p {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 44ch;
+      margin: 0 auto;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .step {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 44px;
+      bottom: -16px;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .step + .step {
+      margin-top: 32px;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-hover);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--brand-from);
+      letter-spacing: 0;
+    }
+
+    .step-body {
+      padding-top: 8px;
+    }
+
+    .step-body h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .step-body p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 40px 0;
+    }
+
+    footer .inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-logo {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      line-height: 1;
+    }
+
+    .footer-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--muted);
+    }
+
+    footer .credits {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    footer a:hover {
+      color: var(--text);
+      border-bottom-color: rgba(255,255,255,0.2);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .hero {
+        padding: 120px 0 80px;
+      }
+
+      .features, .how {
+        padding: 72px 0;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      footer .inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="inner">
+      <div class="nav-logo">༄</div>
+      <span class="nav-name">Workvane</span>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="reveal">
+        <div class="hero-logo">༄</div>
+        <h1><span class="grad">Workvane</span></h1>
+        <p class="hero-tagline grad">Your ticketing and source code tools, finally in sync.</p>
+        <p class="hero-desc">
+          Workvane bridges the gap between how you plan work and how you ship it. Each integration is called a <strong style="color: var(--text); font-weight: 500;">Wind</strong> — a direct connection between a ticketing tool and a source code platform that keeps both sides honest.
+        </p>
+        <a href="#features" class="hero-cta">
+          See how it works
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Winds -->
+  <section class="winds" id="winds">
+    <div class="container">
+      <div class="winds-header reveal">
+        <p class="section-label">Winds</p>
+        <h2>One Wind per stack combination.</h2>
+        <p>Each Wind is a purpose-built bridge between a specific ticketing tool and source code platform. Pick the one that matches your stack.</p>
+      </div>
+
+      <div class="winds-grid reveal">
+
+        <div class="wind-pill available">
+          <span>GitHub</span>
+          <span class="wind-sep">+</span>
+          <span>Jira</span>
+          <span class="wind-badge now">Beta</span>
+        </div>
+
+        <div class="wind-pill">
+          <span>GitHub</span>
+          <span class="wind-sep">+</span>
+          <span>Linear</span>
+          <span class="wind-badge soon">Soon</span>
+        </div>
+
+        <div class="wind-pill">
+          <span>GitLab</span>
+          <span class="wind-sep">+</span>
+          <span>Jira</span>
+          <span class="wind-badge soon">Soon</span>
+        </div>
+
+        <div class="wind-pill">
+          <span>GitLab</span>
+          <span class="wind-sep">+</span>
+          <span>Plane</span>
+          <span class="wind-badge soon">Soon</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="features-header reveal">
+        <p class="section-label">Features</p>
+        <h2>Everything your team needs,<br>in one place.</h2>
+        <p>Stop context-switching between your ticketing tool and your repo host. Workvane surfaces the signal — whatever your stack.</p>
+      </div>
+
+      <div class="features-grid">
+
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#g1)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#14b8a6"/></linearGradient></defs>
+              <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+          </div>
+          <h3>Unified Dashboard</h3>
+          <p>All open PRs with their linked ticket statuses in one view. No more tab-juggling between your repo host and your ticketing tool.</p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#g2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#14b8a6"/></linearGradient></defs>
+              <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </div>
+          <h3>Mismatch Detection</h3>
+          <p>Flags when a PR is open but the ticket is Done, or a ticket is In Progress with no open PR. Catch drift before it becomes a problem.</p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#g3)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#14b8a6"/></linearGradient></defs>
+              <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+            </svg>
+          </div>
+          <h3>One-Click Transitions</h3>
+          <p>Move tickets through your workflow directly from the PR view. Merge and transition in one action — no context switch required.</p>
+        </div>
+
+        <div class="feature-card reveal">
+          <div class="feature-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#g4)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <defs><linearGradient id="g4" x1="6" y1="4" x2="18" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#14b8a6"/></linearGradient></defs>
+              <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+          </div>
+          <h3>Sprint Health</h3>
+          <p>Capacity analysis, unestimated tickets, and velocity warnings. Know if your sprint is on track before the retrospective tells you it wasn't.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="how" id="how">
+    <div class="container">
+      <div class="how-header reveal">
+        <p class="section-label">How it works</p>
+        <h2>Up and running in minutes.</h2>
+        <p>No complex setup. No agents to install. Just pick a Wind and go.</p>
+      </div>
+
+      <div class="steps">
+
+        <div class="step reveal">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h3>Choose a Wind</h3>
+            <p>Pick the integration that matches your stack — today that's GitHub + Jira, with more combinations on the way.</p>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h3>Connect your tools</h3>
+            <p>Authorize both sides with OAuth in a few clicks. Read-only by default — Workvane only writes back when you ask it to.</p>
+          </div>
+        </div>
+
+        <div class="step reveal">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h3>See everything in one dashboard</h3>
+            <p>Your unified PR and ticket view is ready. Mismatches are highlighted, transitions are one click away, and your sprint is finally legible.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div class="divider"></div>
+  <footer>
+    <div class="container">
+      <div class="inner">
+        <div class="brand">
+          <div class="footer-logo">༄</div>
+          <span class="footer-name">Workvane</span>
+        </div>
+        <p class="credits">Built by <a href="https://leog.me" target="_blank" rel="noopener">Leo Giovanetti</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll-reveal via Intersection Observer
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach((el, i) => {
+      // Stagger sibling cards slightly
+      const card = el.closest('.features-grid');
+      if (card) {
+        const siblings = Array.from(card.querySelectorAll('.reveal'));
+        const idx = siblings.indexOf(el);
+        if (idx > -1) el.style.transitionDelay = (idx * 80) + 'ms';
+      }
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
