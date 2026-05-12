@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Workvane — Bridge your ticketing and source code tools</title>
-  <meta name="description" content="Workvane connects your ticketing tools and source code platforms through Winds — purpose-built integrations that give you a unified view of what's open, what's stale, and what's out of sync." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workvane — Development tools for workflow control</title>
+    <meta name="description"
+      content="Workvane builds Winds: focused development tools that connect source code, tickets, and workflow state. The first Wind brings Jira controls into GitHub pull requests." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet" />
+    <style>
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -16,16 +19,17 @@
     }
 
     :root {
-      --bg: #0a0a0f;
-      --bg-card: #111118;
-      --bg-card-hover: #15151e;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --border: rgba(255, 255, 255, 0.06);
-      --border-hover: rgba(14, 165, 233, 0.25);
-      --brand-from: #0ea5e9;
-      --brand-to: #14b8a6;
-      --gradient: linear-gradient(135deg, #0ea5e9, #14b8a6);
+      --bg-base: #0a0a0a;
+      --bg-elevated: #111111;
+      --bg-card: #171717;
+      --bg-subtle: #1a1a1a;
+      --text-primary: #ededed;
+      --text-muted: #888888;
+      --border-color: #2a2a2a;
+      --border-subtle: #222222;
+      --accent: #3b82f6;
+      --accent-secondary: #60a5fa;
+      --gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
     }
 
     html {
@@ -33,81 +37,744 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.6;
       overflow-x: hidden;
     }
 
-    /* ── Layout helpers ── */
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
     .container {
-      max-width: 960px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 0 24px;
     }
 
-    .text-col {
-      max-width: 60ch;
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(10, 10, 10, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
 
-    /* ── Gradient text ── */
-    .grad {
+    nav .inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 64px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .mark {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      font-size: 0.875rem;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    /* Buttons */
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+      height: 40px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .button-primary {
+      background: var(--text-primary);
+      color: var(--bg-base);
+    }
+
+    .button-primary:hover {
+      background: #fff;
+    }
+
+    .button-secondary {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+
+    .button-secondary:hover {
+      border-color: var(--text-muted);
+    }
+
+    .button-gradient {
+      background: var(--gradient);
+      color: #fff;
+      border: none;
+    }
+
+    .button-gradient:hover {
+      opacity: 0.9;
+    }
+
+    /* Vercel-style Section Separator - now inside each section */
+    .section-separator {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      margin-bottom: 40px;
+    }
+
+    .section-separator-line {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      top: 50%;
+      height: 1px;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-separator-line::before,
+    .section-separator-line::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--border-color) 0,
+        var(--border-color) 4px,
+        transparent 4px,
+        transparent 10px
+      );
+    }
+
+    .section-separator-label {
+      padding: 8px 20px;
+      background: inherit;
+      font-family: "Geist Mono", monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 1px dashed var(--border-color);
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-elevated .section-separator-label {
+      background: var(--bg-elevated);
+    }
+
+    .section-base .section-separator-label {
+      background: var(--bg-base);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 100px 0 80px;
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-base);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.12), transparent);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 64px;
+      align-items: center;
+      position: relative;
+    }
+
+    .eyebrow {
+      font-family: "Geist Mono", monospace;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .eyebrow::before {
+      content: "//";
+      color: var(--accent);
+    }
+
+    h1 {
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+
+    h1 .gradient-text {
       background: var(--gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
-    /* ── Nav ── */
-    nav {
-      position: fixed;
+    .hero-text {
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      line-height: 1.6;
+      max-width: 48ch;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 40px;
+    }
+
+    .privacy-note {
+      margin-top: 32px;
+      padding: 16px 20px;
+      background: var(--bg-card);
+      border-left: 2px solid var(--accent);
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    /* Screenshot Stack */
+    .screenshot-stack {
+      position: relative;
+      min-height: 500px;
+    }
+
+    .stack-shot {
+      position: absolute;
+      width: min(100%, 480px);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stack-shot img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      object-position: top left;
+    }
+
+    .stack-shot figcaption {
+      padding: 12px 16px;
+      font-family: "Geist Mono", monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-elevated);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stack-shot figcaption::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .stack-shot.one { top: 0; right: 0; z-index: 1; }
+    .stack-shot.two { top: 100px; left: 0; z-index: 2; }
+    .stack-shot.three { top: 200px; right: 20px; z-index: 3; }
+
+    .stack-shot:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(59, 130, 246, 0.15);
+      z-index: 10;
+    }
+
+    /* Sections */
+    section {
+      position: relative;
+    }
+
+    .section-elevated {
+      background: var(--bg-elevated);
+    }
+
+    .section-base {
+      background: var(--bg-base);
+    }
+
+    .section-content {
+      padding: 0 0 80px;
+    }
+
+    .section-head {
+      max-width: 640px;
+      margin-bottom: 56px;
+    }
+
+    .section-head.center {
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+
+    .section-head.center .eyebrow {
+      justify-content: center;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .section-head p {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    /* Wind Grid */
+    .wind-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .wind {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 100px;
+      transition: all 0.2s;
+    }
+
+    .wind:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+
+    .wind strong {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .status {
+      padding: 4px 10px;
+      font-family: "Geist Mono", monospace;
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-radius: 100px;
+    }
+
+    .status-live {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .status-soon {
+      background: var(--bg-subtle);
+      color: var(--text-muted);
+      border: 1px dashed var(--border-color);
+    }
+
+    /* Wind Focus Card */
+    .wind-focus {
+      display: grid;
+      grid-template-columns: 1.4fr 0.6fr;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .wind-focus::before {
+      content: "";
+      position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      z-index: 100;
-      padding: 18px 0;
-      background: rgba(10, 10, 15, 0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
+      height: 1px;
+      background: var(--gradient);
     }
 
-    nav .inner {
+    .wind-focus-content {
+      padding: 40px;
+    }
+
+    .wind-focus-proof {
+      padding: 40px;
+      background: var(--bg-subtle);
+      border-left: 1px dashed var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .proof-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 24px;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-primary);
     }
 
-    .nav-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
+    .proof-item::before {
+      content: "+";
+      font-family: "Geist Mono", monospace;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    /* Feature Grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .card {
+      padding: 40px 32px;
+      border-right: 1px dashed var(--border-color);
+      border-bottom: 1px dashed var(--border-color);
+      position: relative;
+      transition: background 0.2s;
+      background: var(--bg-elevated);
+    }
+
+    .card:nth-child(3n) {
+      border-right: none;
+    }
+
+    .card:nth-child(n+4) {
+      border-bottom: none;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 32px;
+      right: 32px;
+      height: 1px;
+      background: transparent;
+      transition: background 0.2s;
+    }
+
+    .card:hover {
+      background: var(--bg-card);
+    }
+
+    .card:hover::before {
       background: var(--gradient);
+    }
+
+    .card-number {
+      font-family: "Geist Mono", monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-number::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--border-color) 0,
+        var(--border-color) 3px,
+        transparent 3px,
+        transparent 8px
+      );
+    }
+
+    .card h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    /* Steps Grid */
+    .steps-connector {
+      position: absolute;
+      top: 50%;
+      left: 24px;
+      right: 24px;
+      height: 1px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--border-color) 0,
+        var(--border-color) 8px,
+        transparent 8px,
+        transparent 16px
+      );
+      transform: translateY(40px);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      position: relative;
+    }
+
+    .step {
+      text-align: center;
+      padding: 32px 24px;
+      background: var(--bg-elevated);
+      position: relative;
+    }
+
+    .step-icon {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 17px;
-      line-height: 1;
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      font-family: "Geist Mono", monospace;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--accent);
+      position: relative;
+    }
+
+    .step h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    /* Pricing Grid */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 800px;
+      margin: 0 auto;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .price-card {
+      padding: 40px;
+      background: var(--bg-elevated);
+    }
+
+    .price-card:first-child {
+      border-right: 1px dashed var(--border-color);
+    }
+
+    .price-card.featured {
+      background: var(--bg-card);
+      position: relative;
+    }
+
+    .price-card.featured::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gradient);
+    }
+
+    .price-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .price-card > p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .price-amount {
+      font-size: 3.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin: 24px 0;
+      color: var(--text-primary);
+    }
+
+    .price-card ul {
+      list-style: none;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    .price-card li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .price-card li::before {
+      content: "+";
+      font-family: "Geist Mono", monospace;
+      font-weight: 700;
+      color: var(--accent);
       flex-shrink: 0;
     }
 
-    .nav-name {
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      color: var(--text);
+    .team-cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      max-width: 800px;
+      margin: 32px auto 0;
+      padding: 24px 32px;
+      background: var(--bg-elevated);
+      border: 1px dashed var(--border-color);
+      border-radius: 12px;
     }
 
-    /* ── Scroll-reveal ── */
+    .team-cta h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .team-cta p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    /* Feedback Section */
+    .feedback-section::before {
+      content: "";
+      position: absolute;
+      bottom: -50%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(59, 130, 246, 0.1), transparent);
+      pointer-events: none;
+    }
+
+    /* Footer */
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-base);
+    }
+
+    footer .inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    footer p,
+    footer a {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    footer a:hover {
+      color: var(--text-primary);
+    }
+
+    /* Reveal Animation */
     .reveal {
       opacity: 0;
-      transform: translateY(22px);
+      transform: translateY(20px);
       transition: opacity 0.6s ease, transform 0.6s ease;
     }
 
@@ -116,615 +783,401 @@
       transform: translateY(0);
     }
 
-    /* ── Hero ── */
-    .hero {
-      padding: 160px 0 120px;
-      text-align: center;
-    }
-
-    .hero-logo {
-      width: 72px;
-      height: 72px;
-      border-radius: 18px;
-      background: var(--gradient);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 38px;
-      line-height: 1;
-      margin: 0 auto 28px;
-      box-shadow: 0 0 40px rgba(14, 165, 233, 0.18);
-    }
-
-    .hero h1 {
-      font-size: clamp(2.4rem, 6vw, 3.6rem);
-      font-weight: 600;
-      letter-spacing: -0.04em;
-      line-height: 1.1;
-      color: var(--text);
-      margin-bottom: 12px;
-    }
-
-    .hero-tagline {
-      font-size: clamp(1.1rem, 3vw, 1.35rem);
-      font-weight: 400;
-      letter-spacing: -0.015em;
-      margin-bottom: 24px;
-    }
-
-    .hero-desc {
-      font-size: 1rem;
-      color: var(--muted);
-      max-width: 52ch;
-      margin: 0 auto 40px;
-      line-height: 1.7;
-    }
-
-    .hero-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 28px;
-      border-radius: 10px;
-      background: var(--gradient);
-      color: #fff;
-      font-size: 0.95rem;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      text-decoration: none;
-      transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 4px 20px rgba(14, 165, 233, 0.2);
-    }
-
-    .hero-cta:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 28px rgba(14, 165, 233, 0.32);
-    }
-
-    /* ── Section labels ── */
-    .section-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--brand-from);
-      margin-bottom: 14px;
-    }
-
-    /* ── Winds ── */
-    .winds {
-      padding: 80px 0 100px;
-      border-top: 1px solid var(--border);
-    }
-
-    .winds-header {
-      text-align: center;
-      margin-bottom: 48px;
-    }
-
-    .winds-header h2 {
-      font-size: clamp(1.6rem, 4vw, 2.2rem);
-      font-weight: 600;
-      letter-spacing: -0.035em;
-      color: var(--text);
-      margin-bottom: 12px;
-    }
-
-    .winds-header p {
-      font-size: 1rem;
-      color: var(--muted);
-      max-width: 50ch;
-      margin: 0 auto;
-    }
-
-    .winds-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-    }
-
-    .wind-pill {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 20px;
-      border-radius: 40px;
-      border: 1px solid var(--border);
-      background: var(--bg-card);
-      font-size: 0.88rem;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      color: var(--muted);
-      transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
-    }
-
-    .wind-pill.available {
-      border-color: rgba(14, 165, 233, 0.3);
-      color: var(--text);
-      background: rgba(14, 165, 233, 0.05);
-    }
-
-    .wind-pill.available:hover {
-      border-color: rgba(14, 165, 233, 0.5);
-      background: rgba(14, 165, 233, 0.09);
-    }
-
-    .wind-badge {
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      padding: 2px 7px;
-      border-radius: 20px;
-    }
-
-    .wind-badge.now {
-      background: rgba(14, 165, 233, 0.12);
-      color: var(--brand-from);
-    }
-
-    .wind-badge.soon {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--muted);
-    }
-
-    .wind-sep {
-      color: var(--muted);
-      font-size: 1rem;
-      font-weight: 300;
-    }
-
-    /* ── Features ── */
-    .features {
-      padding: 100px 0;
-    }
-
-    .features-header {
-      text-align: center;
-      margin-bottom: 56px;
-    }
-
-    .features-header h2 {
-      font-size: clamp(1.6rem, 4vw, 2.2rem);
-      font-weight: 600;
-      letter-spacing: -0.035em;
-      color: var(--text);
-      margin-bottom: 12px;
-    }
-
-    .features-header p {
-      font-size: 1rem;
-      color: var(--muted);
-      max-width: 48ch;
-      margin: 0 auto;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-
-    .feature-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 28px;
-      transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
-    }
-
-    .feature-card:hover {
-      border-color: var(--border-hover);
-      background: var(--bg-card-hover);
-      transform: translateY(-2px);
-    }
-
-    .feature-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: rgba(14, 165, 233, 0.08);
-      border: 1px solid rgba(14, 165, 233, 0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 18px;
-      font-size: 18px;
-    }
-
-    .feature-card h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-
-    .feature-card p {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.65;
-    }
-
-    /* ── How it works ── */
-    .how {
-      padding: 100px 0;
-      border-top: 1px solid var(--border);
-    }
-
-    .how-header {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .how-header h2 {
-      font-size: clamp(1.6rem, 4vw, 2.2rem);
-      font-weight: 600;
-      letter-spacing: -0.035em;
-      color: var(--text);
-      margin-bottom: 12px;
-    }
-
-    .how-header p {
-      font-size: 1rem;
-      color: var(--muted);
-      max-width: 44ch;
-      margin: 0 auto;
-    }
-
-    .steps {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      max-width: 560px;
-      margin: 0 auto;
-    }
-
-    .step {
-      display: flex;
-      gap: 24px;
-      align-items: flex-start;
-      position: relative;
-    }
-
-    .step:not(:last-child)::after {
-      content: '';
-      position: absolute;
-      left: 19px;
-      top: 44px;
-      bottom: -16px;
-      width: 1px;
-      background: var(--border);
-    }
-
-    .step + .step {
-      margin-top: 32px;
-    }
-
-    .step-num {
-      flex-shrink: 0;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: var(--bg-card);
-      border: 1px solid var(--border-hover);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--brand-from);
-      letter-spacing: 0;
-    }
-
-    .step-body {
-      padding-top: 8px;
-    }
-
-    .step-body h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .step-body p {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.65;
-    }
-
-    /* ── Divider ── */
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 0;
-    }
-
-    /* ── Footer ── */
-    footer {
-      padding: 40px 0;
-    }
-
-    footer .inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    footer .brand {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .footer-logo {
-      width: 26px;
-      height: 26px;
-      border-radius: 6px;
-      background: var(--gradient);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      line-height: 1;
-    }
-
-    .footer-name {
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      color: var(--muted);
-    }
-
-    footer .credits {
-      font-size: 0.82rem;
-      color: var(--muted);
-    }
-
-    footer a {
-      color: var(--muted);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: color 0.2s ease, border-color 0.2s ease;
-    }
-
-    footer a:hover {
-      color: var(--text);
-      border-bottom-color: rgba(255,255,255,0.2);
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 600px) {
-      .hero {
-        padding: 120px 0 80px;
-      }
-
-      .features, .how {
-        padding: 72px 0;
-      }
-
-      .features-grid {
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-grid,
+      .feature-grid,
+      .wind-focus,
+      .steps-grid,
+      .pricing-grid {
         grid-template-columns: 1fr;
       }
 
-      footer .inner {
+      .price-card:first-child {
+        border-right: none;
+        border-bottom: 1px dashed var(--border-color);
+      }
+
+      .wind-focus-proof {
+        border-left: none;
+        border-top: 1px dashed var(--border-color);
+      }
+
+      .team-cta {
         flex-direction: column;
         align-items: flex-start;
       }
-    }
-  </style>
-</head>
-<body>
 
-  <!-- Nav -->
-  <nav>
-    <div class="inner">
-      <div class="nav-logo">༄</div>
-      <span class="nav-name">Workvane</span>
-    </div>
-  </nav>
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container">
-      <div class="reveal">
-        <div class="hero-logo">༄</div>
-        <h1><span class="grad">Workvane</span></h1>
-        <p class="hero-tagline grad">Your ticketing and source code tools, finally in sync.</p>
-        <p class="hero-desc">
-          Workvane bridges the gap between how you plan work and how you ship it. Each integration is called a <strong style="color: var(--text); font-weight: 500;">Wind</strong> — a direct connection between a ticketing tool and a source code platform that keeps both sides honest.
-        </p>
-        <a href="#how" class="hero-cta">
-          See how it works
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Winds -->
-  <section class="winds" id="winds">
-    <div class="container">
-      <div class="winds-header reveal">
-        <p class="section-label">Winds</p>
-        <h2>One Wind per stack combination.</h2>
-        <p>Each Wind is a purpose-built bridge between a specific ticketing tool and source code platform. Pick the one that matches your stack.</p>
-      </div>
-
-      <div class="winds-grid reveal">
-
-        <div class="wind-pill available">
-          <span>GitHub</span>
-          <span class="wind-sep">+</span>
-          <span>Jira</span>
-          <span class="wind-badge now">Beta</span>
-        </div>
-
-        <div class="wind-pill">
-          <span>GitHub</span>
-          <span class="wind-sep">+</span>
-          <span>Linear</span>
-          <span class="wind-badge soon">Soon</span>
-        </div>
-
-        <div class="wind-pill">
-          <span>GitLab</span>
-          <span class="wind-sep">+</span>
-          <span>Jira</span>
-          <span class="wind-badge soon">Soon</span>
-        </div>
-
-        <div class="wind-pill">
-          <span>GitLab</span>
-          <span class="wind-sep">+</span>
-          <span>Plane</span>
-          <span class="wind-badge soon">Soon</span>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section class="features" id="features">
-    <div class="container">
-      <div class="features-header reveal">
-        <p class="section-label">Features</p>
-        <h2>Everything your team needs,<br>in one place.</h2>
-        <p>Stop context-switching between your ticketing tool and your repo host. Workvane surfaces the signal — whatever your stack.</p>
-      </div>
-
-      <div class="features-grid">
-
-        <div class="feature-card reveal">
-          <div class="feature-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#g1)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#14b8a6"/></linearGradient></defs>
-              <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-            </svg>
-          </div>
-          <h3>Unified Dashboard</h3>
-          <p>All open PRs with their linked ticket statuses in one view. No more tab-juggling between your repo host and your ticketing tool.</p>
-        </div>
-
-        <div class="feature-card reveal">
-          <div class="feature-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#g2)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#14b8a6"/></linearGradient></defs>
-              <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-            </svg>
-          </div>
-          <h3>Mismatch Detection</h3>
-          <p>Flags when a PR is open but the ticket is Done, or a ticket is In Progress with no open PR. Catch drift before it becomes a problem.</p>
-        </div>
-
-        <div class="feature-card reveal">
-          <div class="feature-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#g3)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#14b8a6"/></linearGradient></defs>
-              <polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
-            </svg>
-          </div>
-          <h3>One-Click Transitions</h3>
-          <p>Move tickets through your workflow directly from the PR view. Merge and transition in one action — no context switch required.</p>
-        </div>
-
-        <div class="feature-card reveal">
-          <div class="feature-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#g4)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <defs><linearGradient id="g4" x1="6" y1="4" x2="18" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#14b8a6"/></linearGradient></defs>
-              <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
-            </svg>
-          </div>
-          <h3>Sprint Health</h3>
-          <p>Capacity analysis, unestimated tickets, and velocity warnings. Know if your sprint is on track before the retrospective tells you it wasn't.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- How it works -->
-  <section class="how" id="how">
-    <div class="container">
-      <div class="how-header reveal">
-        <p class="section-label">How it works</p>
-        <h2>Up and running in minutes.</h2>
-        <p>No complex setup. No agents to install. Just pick a Wind and go.</p>
-      </div>
-
-      <div class="steps">
-
-        <div class="step reveal">
-          <div class="step-num">1</div>
-          <div class="step-body">
-            <h3>Choose a Wind</h3>
-            <p>Pick the integration that matches your stack — today that's GitHub + Jira, with more combinations on the way.</p>
-          </div>
-        </div>
-
-        <div class="step reveal">
-          <div class="step-num">2</div>
-          <div class="step-body">
-            <h3>Connect your tools</h3>
-            <p>Authorize both sides with OAuth in a few clicks. Read-only by default — Workvane only writes back when you ask it to.</p>
-          </div>
-        </div>
-
-        <div class="step reveal">
-          <div class="step-num">3</div>
-          <div class="step-body">
-            <h3>See everything in one dashboard</h3>
-            <p>Your unified PR and ticket view is ready. Mismatches are highlighted, transitions are one click away, and your sprint is finally legible.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <div class="divider"></div>
-  <footer>
-    <div class="container">
-      <div class="inner">
-        <div class="brand">
-          <div class="footer-logo">༄</div>
-          <span class="footer-name">Workvane</span>
-        </div>
-        <p class="credits">Built by <a href="https://leog.me" target="_blank" rel="noopener">Leo Giovanetti</a></p>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    // Scroll-reveal via Intersection Observer
-    const revealEls = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
-    revealEls.forEach((el, i) => {
-      // Stagger sibling cards slightly
-      const card = el.closest('.features-grid');
-      if (card) {
-        const siblings = Array.from(card.querySelectorAll('.reveal'));
-        const idx = siblings.indexOf(el);
-        if (idx > -1) el.style.transitionDelay = (idx * 80) + 'ms';
+      .hero {
+        padding-top: 60px;
       }
-      observer.observe(el);
-    });
-  </script>
-</body>
+
+      .screenshot-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        min-height: auto;
+        margin-top: 40px;
+      }
+
+      .stack-shot,
+      .stack-shot.one,
+      .stack-shot.two,
+      .stack-shot.three {
+        position: relative;
+        inset: auto;
+        width: 100%;
+      }
+
+      .steps-connector {
+        display: none;
+      }
+
+      .card {
+        border-right: none;
+      }
+
+      .card:nth-child(n) {
+        border-bottom: 1px dashed var(--border-color);
+      }
+
+      .card:last-child {
+        border-bottom: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      nav .inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        min-height: auto;
+        padding: 16px 24px;
+      }
+
+      .nav-links {
+        width: 100%;
+        gap: 16px;
+        font-size: 0.8rem;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+      }
+
+      .nav-links::-webkit-scrollbar {
+        display: none;
+      }
+
+      .nav-links a {
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+
+      .nav-links .button {
+        display: none;
+      }
+    }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="container inner">
+        <a class="brand" href="#top">
+          <span class="mark">༄</span>
+          <span>Workvane</span>
+        </a>
+        <div class="nav-links">
+          <a href="#winds">Winds</a>
+          <a href="#jira-github">Jira + GitHub</a>
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#feedback">Feedback</a>
+          <a class="button button-primary" href="#pricing">Install beta</a>
+        </div>
+      </div>
+    </nav>
+
+    <main id="top">
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="reveal">
+            <p class="eyebrow">Development tools for workflow control</p>
+            <h1>Work<span class="gradient-text">vane</span></h1>
+            <p class="hero-text">
+              Workvane builds Winds: focused tools that connect source code,
+              tickets, and release state where engineering decisions already
+              happen.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-gradient" href="#jira-github">Explore first Wind</a>
+              <a class="button button-secondary" href="#pricing">Install beta</a>
+            </div>
+            <p class="privacy-note">
+              The first Wind is a Chrome extension for Jira + GitHub. More
+              source and ticketing pairs can follow the same model.
+            </p>
+          </div>
+
+          <div class="screenshot-stack reveal">
+            <figure class="stack-shot one">
+              <img
+                src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/free-pr-list.png"
+                data-fallback-src="assets/e2e/free-pr-list.png"
+                alt="Workvane Free tier injecting Jira status and assignee chips into the GitHub pull request list" />
+              <figcaption>Free: Jira visibility in GitHub PR lists</figcaption>
+            </figure>
+            <figure class="stack-shot two">
+              <img
+                src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-ticket-suggestions.png"
+                data-fallback-src="assets/e2e/pro-ticket-suggestions.png"
+                alt="Workvane Pro suggesting Jira tickets on a GitHub pull request without a Jira key" />
+              <figcaption>Pro: ticket suggestions for keyless PRs</figcaption>
+            </figure>
+            <figure class="stack-shot three">
+              <img
+                src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-transition-complete.png"
+                data-fallback-src="assets/e2e/pro-transition-complete.png"
+                alt="Workvane Pro showing a completed Jira transition action on a GitHub pull request" />
+              <figcaption>Pro: Jira transitions from the PR page</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- Winds Section -->
+      <section class="section-elevated" id="winds">
+        <div class="section-separator" aria-hidden="true">
+          <div class="section-separator-line"></div>
+          <span class="section-separator-label">Winds</span>
+        </div>
+        <div class="container section-content">
+          <div class="section-head reveal">
+            <p class="eyebrow">Product family</p>
+            <h2>One focused tool per source and ticketing pair.</h2>
+            <p>
+              Workvane is the product family. Winds are the tools that bring
+              workflow state into the places developers already work.
+            </p>
+          </div>
+          <div class="wind-grid reveal">
+            <div class="wind"><strong>Jira + GitHub</strong><span class="status status-live">Beta</span></div>
+            <div class="wind"><strong>Linear + GitHub</strong><span class="status status-soon">Soon</span></div>
+            <div class="wind"><strong>Jira + GitLab</strong><span class="status status-soon">Soon</span></div>
+            <div class="wind"><strong>Plane + GitLab</strong><span class="status status-soon">Soon</span></div>
+          </div>
+          <article class="wind-focus reveal" id="jira-github">
+            <div class="wind-focus-content">
+              <p class="eyebrow">Available now</p>
+              <h2>Jira + GitHub Wind</h2>
+              <p style="color: var(--text-muted); margin-bottom: 24px;">
+                A Chrome extension that puts Jira status, ticket recovery, and
+                workflow actions directly inside GitHub pull requests.
+              </p>
+              <div class="hero-actions">
+                <a class="button button-primary" href="#pricing">Install beta</a>
+                <a class="button button-secondary" href="#features">See features</a>
+              </div>
+            </div>
+            <div class="wind-focus-proof">
+              <div class="proof-item">Live GitHub PR-list canary</div>
+              <div class="proof-item">Bulletproof against GitHub UI changes</div>
+              <div class="proof-item">Free and Pro flows verified</div>
+              <div class="proof-item">Screenshots from passing E2E runs</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="section-base" id="features">
+        <div class="section-separator" aria-hidden="true">
+          <div class="section-separator-line"></div>
+          <span class="section-separator-label">Features</span>
+        </div>
+        <div class="container section-content">
+          <div class="section-head center reveal">
+            <p class="eyebrow">Jira + GitHub features</p>
+            <h2>Make the PR list tell the whole workflow truth.</h2>
+            <p>
+              This first Wind starts from the PR page because that is where
+              developers decide what is ready, blocked, stale, or missing a ticket.
+            </p>
+          </div>
+          <div class="feature-grid reveal">
+            <article class="card">
+              <div class="card-number">01</div>
+              <h3>Jira badges in GitHub</h3>
+              <p>Show ticket status and assignee chips next to every linked pull request.</p>
+            </article>
+            <article class="card">
+              <div class="card-number">02</div>
+              <h3>Configurable transitions</h3>
+              <p>Pro users can add as many Jira transition buttons as their workflow needs.</p>
+            </article>
+            <article class="card">
+              <div class="card-number">03</div>
+              <h3>Ticket suggestions</h3>
+              <p>Pro can search Jira and suggest likely ticket IDs when a PR title misses the key.</p>
+            </article>
+            <article class="card">
+              <div class="card-number">04</div>
+              <h3>Status styling</h3>
+              <p>Define statuses, aliases, chip colors, and row background signals per workflow.</p>
+            </article>
+            <article class="card">
+              <div class="card-number">05</div>
+              <h3>Mismatch highlights</h3>
+              <p>Approved PRs with passing checks stand out when Jira is still behind.</p>
+            </article>
+            <article class="card">
+              <div class="card-number">06</div>
+              <h3>Feature feedback</h3>
+              <p>The extension popup includes a direct feature suggestion action for beta users.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- How It Works Section -->
+      <section class="section-elevated" id="how">
+        <div class="section-separator" aria-hidden="true">
+          <div class="section-separator-line"></div>
+          <span class="section-separator-label">How it works</span>
+        </div>
+        <div class="container section-content">
+          <div class="section-head center reveal">
+            <p class="eyebrow">Getting started</p>
+            <h2>Install, configure, keep moving.</h2>
+          </div>
+          <div class="steps-connector" aria-hidden="true"></div>
+          <div class="steps-grid reveal">
+            <article class="step">
+              <div class="step-icon">1</div>
+              <h3>Connect Jira locally</h3>
+              <p>Add your Jira domain, email, token, project keys, and status color rules.</p>
+            </article>
+            <article class="step">
+              <div class="step-icon">2</div>
+              <h3>Open GitHub PRs</h3>
+              <p>Workvane reads ticket keys from titles, branches, local overrides, and suggestions.</p>
+            </article>
+            <article class="step">
+              <div class="step-icon">3</div>
+              <h3>Act from GitHub</h3>
+              <p>Filter by Jira state, transition tickets, and link PRs back to Jira when needed.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pricing Section -->
+      <section class="section-base" id="pricing">
+        <div class="section-separator" aria-hidden="true">
+          <div class="section-separator-line"></div>
+          <span class="section-separator-label">Pricing</span>
+        </div>
+        <div class="container section-content">
+          <div class="section-head center reveal">
+            <p class="eyebrow">Plans</p>
+            <h2>Free for visibility. Pro for workflow control.</h2>
+            <p>
+              Start with the free extension, then upgrade when you need workflow
+              actions and ticket recovery.
+            </p>
+          </div>
+          <div class="pricing-grid">
+            <article class="price-card reveal">
+              <h3>Free</h3>
+              <p>For seeing Jira state where you already work.</p>
+              <div class="price-amount">$0</div>
+              <a class="button button-secondary" style="width: 100%;" href="#feedback">Join beta</a>
+              <ul>
+                <li>Jira status badges</li>
+                <li>Assignee chips</li>
+                <li>Jira filters in PR lists</li>
+                <li>Basic mismatch highlighting</li>
+              </ul>
+            </article>
+            <article class="price-card featured reveal">
+              <h3>Pro</h3>
+              <p>For teams and solo devs who move tickets from GitHub.</p>
+              <div class="price-amount">TBD</div>
+              <a class="button button-gradient" style="width: 100%;" href="#feedback">Request Pro access</a>
+              <ul>
+                <li>Unlimited transition buttons</li>
+                <li>Configurable status colors and aliases</li>
+                <li>Jira ticket suggestions for keyless PRs</li>
+                <li>PR association overrides and Jira remote links</li>
+              </ul>
+            </article>
+          </div>
+          <div class="team-cta reveal">
+            <div>
+              <h3>Need Pro for a team?</h3>
+              <p>Team billing and shared workflow presets are available for early customers.</p>
+            </div>
+            <a class="button button-primary" href="mailto:leo@leog.me?subject=Workvane%20team%20billing">Talk about team Pro</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Feedback Section -->
+      <section class="section-elevated feedback-section" id="feedback">
+        <div class="section-separator" aria-hidden="true">
+          <div class="section-separator-line"></div>
+          <span class="section-separator-label">Feedback</span>
+        </div>
+        <div class="container section-content">
+          <div class="section-head reveal">
+            <p class="eyebrow">Shape the product</p>
+            <h2>Suggest a Wind, workflow rule, or Pro feature.</h2>
+            <p>
+              The extension popup opens this feedback path. Early requests
+              should shape the first public Chrome Web Store release.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="mailto:leo@leog.me?subject=Workvane%20feature%20suggestion">Suggest a feature</a>
+              <a class="button button-secondary" href="https://leog.me" target="_blank" rel="noopener">Contact Leo</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container inner">
+        <a class="brand" href="#top">
+          <span class="mark">༄</span>
+          <span>Workvane</span>
+        </a>
+        <p>Built by <a href="https://leog.me" target="_blank" rel="noopener">Leo Giovanetti</a></p>
+      </div>
+    </footer>
+
+    <script>
+      const revealEls = document.querySelectorAll(".reveal");
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
+
+      revealEls.forEach((el, index) => {
+        el.style.transitionDelay = `${Math.min(index * 50, 200)}ms`;
+        observer.observe(el);
+      });
+
+      document.querySelectorAll("img[data-fallback-src]").forEach((image) => {
+        image.addEventListener("error", () => {
+          if (image.dataset.fallbackActive === "1") return;
+          image.dataset.fallbackActive = "1";
+          image.src = image.dataset.fallbackSrc;
+        });
+      });
+    </script>
+  </body>
 </html>
