@@ -298,12 +298,18 @@
 
     .stack-shot {
       position: absolute;
-      width: min(100%, 480px);
+      width: min(92%, 480px);
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: 12px;
+      cursor: zoom-in;
       overflow: hidden;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stack-shot:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
     }
 
     .stack-shot img {
@@ -334,14 +340,102 @@
       border-radius: 50%;
     }
 
-    .stack-shot.one { top: 0; right: 0; z-index: 1; }
-    .stack-shot.two { top: 100px; left: 0; z-index: 2; }
-    .stack-shot.three { top: 200px; right: 20px; z-index: 3; }
+    .stack-shot.one { top: 0; right: clamp(-18px, -1.5vw, -10px); z-index: 1; }
+    .stack-shot.two { top: 116px; left: 0; z-index: 2; }
+    .stack-shot.three { top: 228px; right: clamp(4px, 2vw, 24px); z-index: 3; }
 
     .stack-shot:hover {
       transform: translateY(-8px);
       box-shadow: 0 20px 60px rgba(59, 130, 246, 0.15);
       z-index: 10;
+    }
+
+    .image-modal {
+      display: grid;
+      inset: 0;
+      opacity: 0;
+      padding: 24px;
+      place-items: center;
+      pointer-events: none;
+      position: fixed;
+      transition: opacity 0.18s ease;
+      visibility: hidden;
+      z-index: 200;
+    }
+
+    .image-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+    }
+
+    .image-modal-backdrop {
+      background: rgba(0, 0, 0, 0.82);
+      border: 0;
+      cursor: zoom-out;
+      inset: 0;
+      position: absolute;
+    }
+
+    .image-modal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.48);
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100vh - 48px);
+      overflow: hidden;
+      position: relative;
+      width: min(1180px, calc(100vw - 48px));
+      z-index: 1;
+    }
+
+    .image-modal-card img {
+      background: #050505;
+      display: block;
+      max-height: calc(100vh - 126px);
+      object-fit: contain;
+      width: 100%;
+    }
+
+    .image-modal-card figcaption {
+      background: var(--bg-elevated);
+      border-top: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-family: "Geist Mono", monospace;
+      font-size: 0.78rem;
+      padding: 14px 18px;
+    }
+
+    .image-modal-close {
+      align-items: center;
+      background: rgba(10, 10, 10, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      height: 38px;
+      justify-content: center;
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      width: 38px;
+      z-index: 2;
+    }
+
+    .image-modal-close:hover {
+      background: rgba(37, 99, 235, 0.9);
+    }
+
+    .image-modal-close svg {
+      height: 18px;
+      width: 18px;
+    }
+
+    body.modal-open {
+      overflow: hidden;
     }
 
     /* Sections */
@@ -823,19 +917,31 @@
 
       .screenshot-stack {
         display: flex;
-        flex-direction: column;
-        gap: 16px;
-        min-height: auto;
+        flex-direction: row;
+        align-items: stretch;
+        gap: 12px;
         margin-top: 40px;
+        min-height: auto;
+        overflow-x: auto;
+        overflow-y: visible;
+        padding-bottom: 12px;
+        scroll-snap-type: x proximity;
+        scrollbar-width: none;
+      }
+
+      .screenshot-stack::-webkit-scrollbar {
+        display: none;
       }
 
       .stack-shot,
       .stack-shot.one,
       .stack-shot.two,
       .stack-shot.three {
+        flex: 0 0 min(72vw, 340px);
         position: relative;
         inset: auto;
-        width: 100%;
+        scroll-snap-align: start;
+        width: auto;
       }
 
       .steps-grid::before {
@@ -885,6 +991,19 @@
       .nav-links .button {
         display: none;
       }
+
+      .image-modal {
+        padding: 12px;
+      }
+
+      .image-modal-card {
+        max-height: calc(100vh - 24px);
+        width: calc(100vw - 24px);
+      }
+
+      .image-modal-card img {
+        max-height: calc(100vh - 102px);
+      }
     }
     </style>
   </head>
@@ -929,21 +1048,36 @@
           </div>
 
           <div class="screenshot-stack reveal">
-            <figure class="stack-shot one">
+            <figure
+              class="stack-shot one"
+              data-screenshot-modal
+              role="button"
+              tabindex="0"
+              aria-label="Open screenshot: Free Jira visibility in GitHub PR lists">
               <img
                 src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/free-pr-list.png"
                 data-fallback-src="assets/e2e/free-pr-list.png"
                 alt="Workvane Free tier injecting Jira status and assignee chips into the GitHub pull request list" />
               <figcaption>Free: Jira visibility in GitHub PR lists</figcaption>
             </figure>
-            <figure class="stack-shot two">
+            <figure
+              class="stack-shot two"
+              data-screenshot-modal
+              role="button"
+              tabindex="0"
+              aria-label="Open screenshot: Pro ticket suggestions for keyless PRs">
               <img
                 src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-ticket-suggestions.png"
                 data-fallback-src="assets/e2e/pro-ticket-suggestions.png"
                 alt="Workvane Pro suggesting Jira tickets on a GitHub pull request without a Jira key" />
               <figcaption>Pro: ticket suggestions for keyless PRs</figcaption>
             </figure>
-            <figure class="stack-shot three">
+            <figure
+              class="stack-shot three"
+              data-screenshot-modal
+              role="button"
+              tabindex="0"
+              aria-label="Open screenshot: Pro Jira transitions from the PR page">
               <img
                 src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-transition-complete.png"
                 data-fallback-src="assets/e2e/pro-transition-complete.png"
@@ -1168,6 +1302,19 @@
       </div>
     </footer>
 
+    <div class="image-modal" id="screenshot-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="screenshot-modal-caption">
+      <button class="image-modal-backdrop" type="button" data-modal-close aria-label="Close screenshot preview"></button>
+      <figure class="image-modal-card">
+        <button class="image-modal-close" type="button" data-modal-close aria-label="Close screenshot preview">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+        <img id="screenshot-modal-image" alt="" />
+        <figcaption id="screenshot-modal-caption"></figcaption>
+      </figure>
+    </div>
+
     <script>
       const revealEls = document.querySelectorAll(".reveal");
       const observer = new IntersectionObserver((entries) => {
@@ -1190,6 +1337,63 @@
           image.dataset.fallbackActive = "1";
           image.src = image.dataset.fallbackSrc;
         });
+      });
+
+      const screenshotModal = document.querySelector("#screenshot-modal");
+      const screenshotModalImage = document.querySelector("#screenshot-modal-image");
+      const screenshotModalCaption = document.querySelector("#screenshot-modal-caption");
+      const screenshotModalClose = document.querySelector(".image-modal-close");
+      let screenshotReturnFocus = null;
+
+      function closeScreenshotModal() {
+        if (!screenshotModal.classList.contains("open")) return;
+        screenshotModal.classList.remove("open");
+        screenshotModal.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("modal-open");
+        screenshotModalImage.removeAttribute("src");
+        screenshotModalImage.dataset.fallbackActive = "0";
+        screenshotReturnFocus?.focus();
+        screenshotReturnFocus = null;
+      }
+
+      function openScreenshotModal(figure) {
+        const image = figure.querySelector("img");
+        const caption = figure.querySelector("figcaption");
+        if (!image) return;
+
+        screenshotReturnFocus = figure;
+        screenshotModalImage.alt = image.alt || "";
+        screenshotModalImage.dataset.fallbackSrc = image.dataset.fallbackSrc || "";
+        screenshotModalImage.dataset.fallbackActive = "0";
+        screenshotModalImage.src = image.currentSrc || image.src;
+        screenshotModalCaption.textContent = caption?.textContent || "";
+        screenshotModal.classList.add("open");
+        screenshotModal.setAttribute("aria-hidden", "false");
+        document.body.classList.add("modal-open");
+        screenshotModalClose.focus();
+      }
+
+      screenshotModalImage.addEventListener("error", () => {
+        if (!screenshotModalImage.dataset.fallbackSrc || screenshotModalImage.dataset.fallbackActive === "1") return;
+        screenshotModalImage.dataset.fallbackActive = "1";
+        screenshotModalImage.src = screenshotModalImage.dataset.fallbackSrc;
+      });
+
+      document.querySelectorAll("[data-screenshot-modal]").forEach((figure) => {
+        figure.addEventListener("click", () => openScreenshotModal(figure));
+        figure.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          openScreenshotModal(figure);
+        });
+      });
+
+      document.querySelectorAll("[data-modal-close]").forEach((control) => {
+        control.addEventListener("click", closeScreenshotModal);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeScreenshotModal();
       });
     </script>
   </body>
