@@ -118,12 +118,21 @@
     }
 
     .button-primary {
-      background: var(--text-primary);
-      color: var(--bg-base);
+      background: var(--accent);
+      color: #fff;
     }
 
     .button-primary:hover {
-      background: #fff;
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .nav-links a.button-primary {
+      color: #fff;
+    }
+
+    .nav-links a.button-primary:hover {
+      color: #fff;
     }
 
     .button-secondary {
@@ -168,22 +177,9 @@
       background: linear-gradient(90deg, var(--border-color), rgba(96, 165, 250, 0.38), transparent);
     }
 
-    .section-separator::after {
-      background: radial-gradient(circle, rgba(59, 130, 246, 0.2), transparent 64%);
-      border-radius: 999px;
-      content: "";
-      height: 58px;
-      left: 50%;
-      pointer-events: none;
-      position: absolute;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: 240px;
-    }
-
     .section-separator-label {
       align-items: center;
-      background: linear-gradient(180deg, rgba(23, 23, 23, 0.96), rgba(17, 17, 17, 0.96));
+      background: var(--bg-elevated);
       border: 1px solid rgba(96, 165, 250, 0.26);
       border-radius: 999px;
       box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.02), 0 14px 34px rgba(0, 0, 0, 0.28);
@@ -209,7 +205,7 @@
     }
 
     .section-base .section-separator-label {
-      background: linear-gradient(180deg, rgba(15, 15, 15, 0.96), rgba(10, 10, 10, 0.96));
+      background: var(--bg-base);
     }
 
     /* Hero Section */
@@ -581,12 +577,14 @@
     }
 
     /* Steps Grid */
-    .steps-connector {
-      position: absolute;
-      top: 50%;
-      left: 24px;
-      right: 24px;
-      height: 1px;
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      position: relative;
+    }
+
+    .steps-grid::before {
       background: repeating-linear-gradient(
         90deg,
         var(--border-color) 0,
@@ -594,14 +592,13 @@
         transparent 8px,
         transparent 16px
       );
-      transform: translateY(40px);
-    }
-
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
-      position: relative;
+      content: "";
+      height: 1px;
+      left: 16.666%;
+      position: absolute;
+      right: 16.666%;
+      top: 60px;
+      z-index: 1;
     }
 
     .step {
@@ -626,6 +623,7 @@
       font-weight: 600;
       color: var(--accent);
       position: relative;
+      z-index: 2;
     }
 
     .step h3 {
@@ -840,7 +838,7 @@
         width: 100%;
       }
 
-      .steps-connector {
+      .steps-grid::before {
         display: none;
       }
 
@@ -1064,7 +1062,6 @@
             <p class="eyebrow">Getting started</p>
             <h2>Install, configure, keep moving.</h2>
           </div>
-          <div class="steps-connector" aria-hidden="true"></div>
           <div class="steps-grid reveal">
             <article class="step">
               <div class="step-icon">1</div>
