@@ -146,60 +146,70 @@
       opacity: 0.9;
     }
 
-    /* Vercel-style Section Separator - now inside each section */
     .section-separator {
-      position: relative;
-      display: flex;
       align-items: center;
+      display: flex;
+      gap: 16px;
       justify-content: center;
-      padding: 40px 24px;
-      margin-bottom: 40px;
+      margin-bottom: 46px;
+      padding: 48px 24px 30px;
+      position: relative;
     }
 
     .section-separator-line {
-      position: absolute;
-      left: 24px;
-      right: 24px;
-      top: 50%;
-      height: 1px;
-      display: flex;
-      align-items: center;
-    }
-
-    .section-separator-line::before,
-    .section-separator-line::after {
-      content: "";
+      background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.38), var(--border-color));
       flex: 1;
       height: 1px;
-      background: repeating-linear-gradient(
-        90deg,
-        var(--border-color) 0,
-        var(--border-color) 4px,
-        transparent 4px,
-        transparent 10px
-      );
+      max-width: 300px;
+      opacity: 0.75;
+    }
+
+    .section-separator-line:last-of-type {
+      background: linear-gradient(90deg, var(--border-color), rgba(96, 165, 250, 0.38), transparent);
+    }
+
+    .section-separator::after {
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.2), transparent 64%);
+      border-radius: 999px;
+      content: "";
+      height: 58px;
+      left: 50%;
+      pointer-events: none;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 240px;
     }
 
     .section-separator-label {
-      padding: 8px 20px;
-      background: inherit;
-      font-family: "Geist Mono", monospace;
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      border: 1px dashed var(--border-color);
+      align-items: center;
+      background: linear-gradient(180deg, rgba(23, 23, 23, 0.96), rgba(17, 17, 17, 0.96));
+      border: 1px solid rgba(96, 165, 250, 0.26);
+      border-radius: 999px;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.02), 0 14px 34px rgba(0, 0, 0, 0.28);
+      color: var(--text-primary);
+      display: inline-flex;
+      font-size: 0.86rem;
+      font-weight: 700;
+      gap: 8px;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      padding: 9px 16px;
       position: relative;
       z-index: 1;
     }
 
-    .section-elevated .section-separator-label {
-      background: var(--bg-elevated);
+    .section-separator-label::before {
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 16px rgba(59, 130, 246, 0.75);
+      content: "";
+      height: 6px;
+      width: 6px;
     }
 
     .section-base .section-separator-label {
-      background: var(--bg-base);
+      background: linear-gradient(180deg, rgba(15, 15, 15, 0.96), rgba(10, 10, 10, 0.96));
     }
 
     /* Hero Section */
@@ -341,6 +351,7 @@
     /* Sections */
     section {
       position: relative;
+      scroll-margin-top: 78px;
     }
 
     .section-elevated {
@@ -352,7 +363,7 @@
     }
 
     .section-content {
-      padding: 0 0 80px;
+      padding-bottom: 80px;
     }
 
     .section-head {
@@ -950,6 +961,7 @@
         <div class="section-separator" aria-hidden="true">
           <div class="section-separator-line"></div>
           <span class="section-separator-label">Winds</span>
+          <div class="section-separator-line"></div>
         </div>
         <div class="container section-content">
           <div class="section-head reveal">
@@ -994,6 +1006,7 @@
         <div class="section-separator" aria-hidden="true">
           <div class="section-separator-line"></div>
           <span class="section-separator-label">Features</span>
+          <div class="section-separator-line"></div>
         </div>
         <div class="container section-content">
           <div class="section-head center reveal">
@@ -1044,6 +1057,7 @@
         <div class="section-separator" aria-hidden="true">
           <div class="section-separator-line"></div>
           <span class="section-separator-label">How it works</span>
+          <div class="section-separator-line"></div>
         </div>
         <div class="container section-content">
           <div class="section-head center reveal">
@@ -1076,6 +1090,7 @@
         <div class="section-separator" aria-hidden="true">
           <div class="section-separator-line"></div>
           <span class="section-separator-label">Pricing</span>
+          <div class="section-separator-line"></div>
         </div>
         <div class="container section-content">
           <div class="section-head center reveal">
@@ -1127,6 +1142,7 @@
         <div class="section-separator" aria-hidden="true">
           <div class="section-separator-line"></div>
           <span class="section-separator-label">Feedback</span>
+          <div class="section-separator-line"></div>
         </div>
         <div class="container section-content">
           <div class="section-head reveal">
