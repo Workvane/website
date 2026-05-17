@@ -6,11 +6,16 @@
     <title>Workvane — Development tools for workflow control</title>
     <meta name="description"
       content="Workvane builds Winds: focused development tools that connect source code, tickets, and workflow state. The first Wind brings Jira controls into GitHub pull requests." />
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
-    <link rel="manifest" href="/images/site.webmanifest" />
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico"
+      data-light="/images/favicon.ico" data-dark="/images/favicon-dark.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"
+      data-light="/images/favicon-16x16.png" data-dark="/images/favicon-16x16-dark.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png"
+      data-light="/images/favicon-32x32.png" data-dark="/images/favicon-32x32-dark.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png"
+      data-light="/images/apple-touch-icon.png" data-dark="/images/apple-touch-icon-dark.png" />
+    <link rel="manifest" href="/images/site.webmanifest"
+      data-light="/images/site.webmanifest" data-dark="/images/site-dark.webmanifest" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Workvane — Development tools for workflow control" />
     <meta property="og:description"
@@ -1420,6 +1425,13 @@
       // changes theme manually or the system preference changes.
       let _screenshotIsDark = false;
 
+      function applyFaviconScheme(isDark) {
+        document.querySelectorAll("link[data-light][data-dark]").forEach(function (link) {
+          var next = isDark ? link.dataset.dark : link.dataset.light;
+          if (next && link.href !== next) link.href = next;
+        });
+      }
+
       function applyScreenshotScheme(isDark) {
         _screenshotIsDark = isDark;
         document.querySelectorAll("img[data-dark-src]").forEach((img) => {
@@ -1548,12 +1560,16 @@
           if (labelHost) labelHost.textContent = LABEL[pref];
           button.setAttribute("title", "Theme: " + LABEL[pref] + " — click to change");
           button.setAttribute("aria-label", "Theme: " + LABEL[pref]);
+          applyFaviconScheme(resolveIsDark(pref));
           applyScreenshotScheme(resolveIsDark(pref));
         }
 
-        // Sync screenshots when the OS preference changes while the site is on "system".
+        // Sync favicons and screenshots when the OS preference changes while on "system".
         darkMQ.addEventListener("change", () => {
-          if (read() === "system") applyScreenshotScheme(darkMQ.matches);
+          if (read() === "system") {
+            applyFaviconScheme(darkMQ.matches);
+            applyScreenshotScheme(darkMQ.matches);
+          }
         });
 
         let current = read();
