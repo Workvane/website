@@ -11,6 +11,16 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap"
       rel="stylesheet" />
+    <script>
+      (function () {
+        try {
+          var pref = localStorage.getItem("workvane-theme");
+          if (pref === "light" || pref === "dark") {
+            document.documentElement.setAttribute("data-theme", pref);
+          }
+        } catch (e) {}
+      })();
+    </script>
     <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -19,18 +29,28 @@
     }
 
     :root {
-      --bg-base: #0a0a0a;
-      --bg-elevated: #111111;
-      --bg-card: #171717;
-      --bg-subtle: #1a1a1a;
-      --text-primary: #ededed;
-      --text-muted: #888888;
-      --border-color: #2a2a2a;
-      --border-subtle: #222222;
-      --accent: #3b82f6;
-      --accent-secondary: #60a5fa;
+      color-scheme: light dark;
+
+      --bg-base: light-dark(#fafafa, #0a0a0a);
+      --bg-elevated: light-dark(#ffffff, #111111);
+      --bg-card: light-dark(#ffffff, #171717);
+      --bg-subtle: light-dark(#f4f4f5, #1a1a1a);
+      --text-primary: light-dark(#18181b, #ededed);
+      --text-muted: light-dark(#52525b, #888888);
+      --border-color: light-dark(#e4e4e7, #2a2a2a);
+      --border-subtle: light-dark(#ececef, #222222);
+      --accent: light-dark(#2563eb, #3b82f6);
+      --accent-secondary: light-dark(#3b82f6, #60a5fa);
       --gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      --nav-bg: light-dark(rgba(250, 250, 250, 0.85), rgba(10, 10, 10, 0.8));
+      --shadow-card: light-dark(0 0 0 1px rgba(0, 0, 0, 0.02), 0 0 0 1px rgba(255, 255, 255, 0.02));
+      --shadow-lift: light-dark(0 14px 34px rgba(15, 23, 42, 0.08), 0 14px 34px rgba(0, 0, 0, 0.28));
+      --shadow-modal: light-dark(0 28px 80px rgba(15, 23, 42, 0.18), 0 28px 80px rgba(0, 0, 0, 0.48));
+      --modal-backdrop: light-dark(rgba(15, 23, 42, 0.5), rgba(0, 0, 0, 0.82));
     }
+
+    :root[data-theme="light"] { color-scheme: light; }
+    :root[data-theme="dark"] { color-scheme: dark; }
 
     html {
       scroll-behavior: smooth;
@@ -61,7 +81,7 @@
       top: 0;
       z-index: 100;
       border-bottom: 1px solid var(--border-subtle);
-      background: rgba(10, 10, 10, 0.8);
+      background: var(--nav-bg);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
     }
@@ -100,6 +120,35 @@
 
     .nav-links a:hover {
       color: var(--text-primary);
+    }
+
+    .theme-toggle {
+      align-items: center;
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      font-family: "Geist Mono", monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      gap: 6px;
+      height: 32px;
+      letter-spacing: 0.04em;
+      padding: 0 12px;
+      text-transform: uppercase;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--text-muted);
+      color: var(--text-primary);
+    }
+
+    .theme-toggle svg {
+      height: 14px;
+      width: 14px;
     }
 
     /* Buttons */
@@ -160,9 +209,11 @@
       display: flex;
       gap: 16px;
       justify-content: center;
-      margin-bottom: 46px;
-      padding: 48px 24px 30px;
+      margin-bottom: 64px;
+      padding: 0 24px;
       position: relative;
+      transform: translateY(-50%);
+      z-index: 2;
     }
 
     .section-separator-line {
@@ -182,7 +233,7 @@
       background: var(--bg-elevated);
       border: 1px solid rgba(96, 165, 250, 0.26);
       border-radius: 999px;
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.02), 0 14px 34px rgba(0, 0, 0, 0.28);
+      box-shadow: var(--shadow-card), var(--shadow-lift);
       color: var(--text-primary);
       display: inline-flex;
       font-size: 0.86rem;
@@ -210,7 +261,7 @@
 
     /* Hero Section */
     .hero {
-      padding: 100px 0 80px;
+      padding: 100px 0 160px;
       position: relative;
       overflow: hidden;
       background: var(--bg-base);
@@ -370,7 +421,7 @@
     }
 
     .image-modal-backdrop {
-      background: rgba(0, 0, 0, 0.82);
+      background: var(--modal-backdrop);
       border: 0;
       cursor: zoom-out;
       inset: 0;
@@ -381,7 +432,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: 14px;
-      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.48);
+      box-shadow: var(--shadow-modal);
       display: flex;
       flex-direction: column;
       max-height: calc(100vh - 48px);
@@ -840,7 +891,7 @@
     .feedback-section::before {
       content: "";
       position: absolute;
-      bottom: -50%;
+      bottom: 0;
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
@@ -1020,6 +1071,14 @@
           <a href="#features">Features</a>
           <a href="#pricing">Pricing</a>
           <a href="#feedback">Feedback</a>
+          <button
+            type="button"
+            class="theme-toggle"
+            data-theme-toggle
+            aria-label="Toggle color theme">
+            <span data-theme-icon></span>
+            <span data-theme-label>System</span>
+          </button>
           <a class="button button-primary" href="#pricing">Install beta</a>
         </div>
       </div>
@@ -1056,7 +1115,10 @@
               aria-label="Open screenshot: Free Jira visibility in GitHub PR lists">
               <img
                 src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/free-pr-list.png"
+                data-light-src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/free-pr-list.png"
+                data-dark-src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/free-pr-list-dark.png"
                 data-fallback-src="assets/e2e/free-pr-list.png"
+                data-dark-fallback-src="assets/e2e/free-pr-list-dark.png"
                 alt="Workvane Free tier injecting Jira status and assignee chips into the GitHub pull request list" />
               <figcaption>Free: Jira visibility in GitHub PR lists</figcaption>
             </figure>
@@ -1068,7 +1130,10 @@
               aria-label="Open screenshot: Pro ticket suggestions for keyless PRs">
               <img
                 src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-ticket-suggestions.png"
+                data-light-src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-ticket-suggestions.png"
+                data-dark-src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-ticket-suggestions-dark.png"
                 data-fallback-src="assets/e2e/pro-ticket-suggestions.png"
+                data-dark-fallback-src="assets/e2e/pro-ticket-suggestions-dark.png"
                 alt="Workvane Pro suggesting Jira tickets on a GitHub pull request without a Jira key" />
               <figcaption>Pro: ticket suggestions for keyless PRs</figcaption>
             </figure>
@@ -1080,7 +1145,10 @@
               aria-label="Open screenshot: Pro Jira transitions from the PR page">
               <img
                 src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-transition-complete.png"
+                data-light-src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-transition-complete.png"
+                data-dark-src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-transition-complete-dark.png"
                 data-fallback-src="assets/e2e/pro-transition-complete.png"
+                data-dark-fallback-src="assets/e2e/pro-transition-complete-dark.png"
                 alt="Workvane Pro showing a completed Jira transition action on a GitHub pull request" />
               <figcaption>Pro: Jira transitions from the PR page</figcaption>
             </figure>
@@ -1127,7 +1195,7 @@
               <div class="proof-item">Live GitHub PR-list canary</div>
               <div class="proof-item">Bulletproof against GitHub UI changes</div>
               <div class="proof-item">Free and Pro flows verified</div>
-              <div class="proof-item">Real extension screenshots</div>
+              <div class="proof-item">Transition diagnostics included</div>
             </div>
           </article>
         </div>
@@ -1157,13 +1225,13 @@
             </article>
             <article class="card">
               <div class="card-number">02</div>
-              <h3>Configurable transitions</h3>
-              <p>Pro users can add as many Jira transition buttons as their workflow needs.</p>
+              <h3>One-click transitions</h3>
+              <p>Move Jira tickets through any workflow state without leaving GitHub. Configure conditions per transition so buttons only appear when the PR is actually ready.</p>
             </article>
             <article class="card">
               <div class="card-number">03</div>
               <h3>Ticket suggestions</h3>
-              <p>Pro can search Jira and suggest likely ticket IDs when a PR title misses the key.</p>
+              <p>Pro searches Jira and suggests the most likely ticket when a PR title or branch has no key. Pick one to associate the PR and write a remote link back to Jira.</p>
             </article>
             <article class="card">
               <div class="card-number">04</div>
@@ -1177,8 +1245,8 @@
             </article>
             <article class="card">
               <div class="card-number">06</div>
-              <h3>Feature feedback</h3>
-              <p>The extension popup includes a direct feature suggestion action for beta users.</p>
+              <h3>Transition diagnostics</h3>
+              <p>Dry-run any configured transition against a real ticket from the dashboard. See which conditions pass or fail so you know exactly why a button does or doesn't appear.</p>
             </article>
           </div>
         </div>
@@ -1251,10 +1319,11 @@
               <div class="price-amount">TBD</div>
               <a class="button button-gradient" style="width: 100%;" href="#feedback">Request Pro access</a>
               <ul>
-                <li>Unlimited transition buttons</li>
+                <li>Unlimited conditional transition actions</li>
                 <li>Configurable status colors and aliases</li>
                 <li>Jira ticket suggestions for keyless PRs</li>
                 <li>PR association overrides and Jira remote links</li>
+                <li>Transition diagnostics and dry-run testing</li>
               </ul>
             </article>
           </div>
@@ -1263,7 +1332,7 @@
               <h3>Need Pro for a team?</h3>
               <p>Team billing and shared workflow presets are available for early customers.</p>
             </div>
-            <a class="button button-primary" href="mailto:leo@leog.me?subject=Workvane%20team%20billing">Talk about team Pro</a>
+            <a class="button button-primary" href="mailto:workvane@leog.me?subject=Workvane%20team%20billing">Talk about team Pro</a>
           </div>
         </div>
       </section>
@@ -1284,7 +1353,7 @@
               should shape the first public Chrome Web Store release.
             </p>
             <div class="hero-actions">
-              <a class="button button-primary" href="mailto:leo@leog.me?subject=Workvane%20feature%20suggestion">Suggest a feature</a>
+              <a class="button button-primary" href="mailto:workvane@leog.me?subject=Workvane%20feature%20suggestion">Suggest a feature</a>
               <a class="button button-secondary" href="https://leog.me" target="_blank" rel="noopener">Contact Leo</a>
             </div>
           </div>
@@ -1331,11 +1400,30 @@
         observer.observe(el);
       });
 
+      // Theme-aware screenshot switching. Each <img data-dark-src> carries both
+      // a light and a dark URL; applyScreenshotScheme swaps src when the user
+      // changes theme manually or the system preference changes.
+      let _screenshotIsDark = false;
+
+      function applyScreenshotScheme(isDark) {
+        _screenshotIsDark = isDark;
+        document.querySelectorAll("img[data-dark-src]").forEach((img) => {
+          const newSrc = isDark ? img.dataset.darkSrc : img.dataset.lightSrc;
+          if (newSrc && img.src !== newSrc) {
+            img.dataset.fallbackActive = "0";
+            img.src = newSrc;
+          }
+        });
+      }
+
       document.querySelectorAll("img[data-fallback-src]").forEach((image) => {
         image.addEventListener("error", () => {
           if (image.dataset.fallbackActive === "1") return;
           image.dataset.fallbackActive = "1";
-          image.src = image.dataset.fallbackSrc;
+          const fallback = (_screenshotIsDark && image.dataset.darkFallbackSrc)
+            ? image.dataset.darkFallbackSrc
+            : image.dataset.fallbackSrc;
+          if (fallback) image.src = fallback;
         });
       });
 
@@ -1363,9 +1451,12 @@
 
         screenshotReturnFocus = figure;
         screenshotModalImage.alt = image.alt || "";
-        screenshotModalImage.dataset.fallbackSrc = image.dataset.fallbackSrc || "";
+        // Use the dark fallback when the site is currently in dark mode.
+        screenshotModalImage.dataset.fallbackSrc = (_screenshotIsDark && image.dataset.darkFallbackSrc)
+          ? image.dataset.darkFallbackSrc
+          : (image.dataset.fallbackSrc || "");
         screenshotModalImage.dataset.fallbackActive = "0";
-        screenshotModalImage.src = image.currentSrc || image.src;
+        screenshotModalImage.src = image.src; // already the correct light/dark URL
         screenshotModalCaption.textContent = caption?.textContent || "";
         screenshotModal.classList.add("open");
         screenshotModal.setAttribute("aria-hidden", "false");
@@ -1395,6 +1486,69 @@
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") closeScreenshotModal();
       });
+
+      (function setupThemeToggle() {
+        const THEME_KEY = "workvane-theme";
+        const ORDER = ["system", "light", "dark"];
+        const LABEL = { system: "System", light: "Light", dark: "Dark" };
+        const ICONS = {
+          system:
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" width="14" height="14"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4" stroke-linecap="round"/></svg>',
+          light:
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" width="14" height="14"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke-linecap="round"/></svg>',
+          dark:
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" width="14" height="14"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-linejoin="round"/></svg>',
+        };
+
+        const darkMQ = window.matchMedia("(prefers-color-scheme: dark)");
+
+        const button = document.querySelector("[data-theme-toggle]");
+        if (!button) return;
+        const iconHost = button.querySelector("[data-theme-icon]");
+        const labelHost = button.querySelector("[data-theme-label]");
+
+        function read() {
+          try {
+            const value = localStorage.getItem(THEME_KEY);
+            if (value === "light" || value === "dark") return value;
+          } catch (e) {}
+          return "system";
+        }
+
+        function resolveIsDark(pref) {
+          if (pref === "dark") return true;
+          if (pref === "light") return false;
+          return darkMQ.matches;
+        }
+
+        function apply(pref) {
+          if (pref === "system") {
+            document.documentElement.removeAttribute("data-theme");
+            try { localStorage.removeItem(THEME_KEY); } catch (e) {}
+          } else {
+            document.documentElement.setAttribute("data-theme", pref);
+            try { localStorage.setItem(THEME_KEY, pref); } catch (e) {}
+          }
+          if (iconHost) iconHost.innerHTML = ICONS[pref];
+          if (labelHost) labelHost.textContent = LABEL[pref];
+          button.setAttribute("title", "Theme: " + LABEL[pref] + " — click to change");
+          button.setAttribute("aria-label", "Theme: " + LABEL[pref]);
+          applyScreenshotScheme(resolveIsDark(pref));
+        }
+
+        // Sync screenshots when the OS preference changes while the site is on "system".
+        darkMQ.addEventListener("change", () => {
+          if (read() === "system") applyScreenshotScheme(darkMQ.matches);
+        });
+
+        let current = read();
+        apply(current);
+
+        button.addEventListener("click", () => {
+          current = ORDER[(ORDER.indexOf(current) + 1) % ORDER.length];
+          apply(current);
+        });
+      })();
     </script>
   </body>
 </html>
