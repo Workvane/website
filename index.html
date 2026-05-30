@@ -478,11 +478,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
 
     .image-modal-card figcaption {
+      align-items: center;
       background: var(--bg-elevated);
       border-top: 1px solid var(--border-color);
       color: var(--text-muted);
+      display: flex;
       font-family: "Geist Mono", monospace;
       font-size: 0.78rem;
+      gap: 12px;
+      justify-content: space-between;
       padding: 14px 18px;
     }
 
@@ -510,6 +514,57 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .image-modal-close svg {
       height: 18px;
       width: 18px;
+    }
+
+    .image-modal-nav {
+      align-items: center;
+      background: rgba(10, 10, 10, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      height: 44px;
+      justify-content: center;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      z-index: 2;
+    }
+
+    .image-modal-prev { left: 12px; }
+    .image-modal-next { right: 12px; }
+
+    .image-modal-nav:hover {
+      background: rgba(37, 99, 235, 0.9);
+    }
+
+    .image-modal-nav:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .image-modal-nav svg {
+      height: 22px;
+      width: 22px;
+    }
+
+    .image-modal-counter {
+      color: var(--text-muted);
+      flex: 0 0 auto;
+      font-family: "Geist Mono", monospace;
+      font-size: 0.72rem;
+      opacity: 0.75;
+    }
+
+    @media (max-width: 720px) {
+      .image-modal-nav {
+        height: 38px;
+        width: 38px;
+      }
+      .image-modal-prev { left: 6px; }
+      .image-modal-next { right: 6px; }
     }
 
     body.modal-open {
@@ -1137,53 +1192,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </p>
           </div>
 
-          <div class="screenshot-stack reveal">
-            <figure
-              class="stack-shot one"
-              data-screenshot-modal
-              role="button"
-              tabindex="0"
-              aria-label="Open screenshot: Free Jira visibility in GitHub PR lists">
-              <img
-                src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/free-pr-list.png"
-                data-light-src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/free-pr-list.png"
-                data-dark-src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/free-pr-list-dark.png"
-                data-fallback-src="assets/e2e/free-pr-list.png"
-                data-dark-fallback-src="assets/e2e/free-pr-list-dark.png"
-                alt="Workvane Free tier injecting Jira status and assignee chips into the GitHub pull request list" />
-              <figcaption>Free: Jira visibility in GitHub PR lists</figcaption>
-            </figure>
-            <figure
-              class="stack-shot two"
-              data-screenshot-modal
-              role="button"
-              tabindex="0"
-              aria-label="Open screenshot: Pro ticket suggestions for keyless PRs">
-              <img
-                src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-ticket-suggestions.png"
-                data-light-src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-ticket-suggestions.png"
-                data-dark-src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-ticket-suggestions-dark.png"
-                data-fallback-src="assets/e2e/pro-ticket-suggestions.png"
-                data-dark-fallback-src="assets/e2e/pro-ticket-suggestions-dark.png"
-                alt="Workvane Pro suggesting Jira tickets on a GitHub pull request without a Jira key" />
-              <figcaption>Pro: ticket suggestions for keyless PRs</figcaption>
-            </figure>
-            <figure
-              class="stack-shot three"
-              data-screenshot-modal
-              role="button"
-              tabindex="0"
-              aria-label="Open screenshot: Pro Jira transitions from the PR page">
-              <img
-                src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-transition-complete.png"
-                data-light-src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-transition-complete.png"
-                data-dark-src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-transition-complete-dark.png"
-                data-fallback-src="assets/e2e/pro-transition-complete.png"
-                data-dark-fallback-src="assets/e2e/pro-transition-complete-dark.png"
-                alt="Workvane Pro showing a completed Jira transition action on a GitHub pull request" />
-              <figcaption>Pro: Jira transitions from the PR page</figcaption>
-            </figure>
-          </div>
+          <div
+            class="screenshot-stack reveal"
+            id="hero-stack"
+            data-hero-fallback="free-pr-list.png,pro-ticket-suggestions.png,pro-transition-complete.png"></div>
         </div>
       </section>
 
@@ -1416,8 +1428,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
           </svg>
         </button>
+        <button class="image-modal-nav image-modal-prev" type="button" data-modal-prev aria-label="Previous screenshot">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+            <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <button class="image-modal-nav image-modal-next" type="button" data-modal-next aria-label="Next screenshot">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
         <img id="screenshot-modal-image" alt="" />
-        <figcaption id="screenshot-modal-caption"></figcaption>
+        <figcaption id="screenshot-modal-caption">
+          <span id="screenshot-modal-caption-text"></span>
+          <span class="image-modal-counter" id="screenshot-modal-counter" aria-live="polite"></span>
+        </figcaption>
       </figure>
     </div>
 
@@ -1458,24 +1483,132 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             img.src = newSrc;
           }
         });
+        // The carousel modal resolves URLs from the slide list, not from
+        // data-* on the <img>, so re-render the current slide if it's open.
+        const modal = document.querySelector("#screenshot-modal");
+        if (modal?.classList.contains("open")) {
+          showScreenshotSlide(screenshotCurrentIndex);
+        }
       }
 
-      document.querySelectorAll("img[data-fallback-src]").forEach((image) => {
-        image.addEventListener("error", () => {
-          if (image.dataset.fallbackActive === "1") return;
-          image.dataset.fallbackActive = "1";
-          const fallback = (_screenshotIsDark && image.dataset.darkFallbackSrc)
-            ? image.dataset.darkFallbackSrc
-            : image.dataset.fallbackSrc;
-          if (fallback) image.src = fallback;
+      function bindScreenshotFallback(images) {
+        images.forEach((image) => {
+          if (image.dataset.wvFallbackBound === "1") return;
+          image.dataset.wvFallbackBound = "1";
+          image.addEventListener("error", () => {
+            if (image.dataset.fallbackActive === "1") return;
+            image.dataset.fallbackActive = "1";
+            const fallback = (_screenshotIsDark && image.dataset.darkFallbackSrc)
+              ? image.dataset.darkFallbackSrc
+              : image.dataset.fallbackSrc;
+            if (fallback) image.src = fallback;
+          });
         });
+      }
+      bindScreenshotFallback(document.querySelectorAll("img[data-fallback-src]"));
+
+      // Carousel slide list. Order matters: hero figures bind to specific
+      // indices via data-carousel-index. Keep the 3 hero shots at indices 0,
+      // 6, and 9 (free intro, pro suggestions, pro transition done) and the
+      // extras grouped logically around them.
+      const SCREENSHOT_BASE =
+        "https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/";
+      const screenshotSlide = (name, caption, alt) => ({
+        src: `${SCREENSHOT_BASE}${name}.png`,
+        darkSrc: `${SCREENSHOT_BASE}${name}-dark.png`,
+        fallbackSrc: `assets/e2e/${name}.png`,
+        darkFallbackSrc: `assets/e2e/${name}-dark.png`,
+        caption,
+        alt,
       });
+      const screenshotCarouselSlides = [
+        screenshotSlide(
+          "free-pr-list",
+          "Free: Jira visibility in GitHub PR lists",
+          "Workvane Free tier injecting Jira status and assignee chips into the GitHub pull request list"
+        ),
+        screenshotSlide(
+          "free-locked-suggestions",
+          "Free: Pro ticket suggestions locked",
+          "Workvane Free showing the locked Pro ticket-suggestion panel on a keyless GitHub pull request"
+        ),
+        screenshotSlide(
+          "free-upsell-placeholder",
+          "Free: Pro upsell placeholders on PR rows",
+          "Workvane Free showing Pro upsell placeholders on GitHub pull request list rows"
+        ),
+        screenshotSlide(
+          "free-upsell-dismissed",
+          "Free: dismissed upsell placeholders",
+          "Workvane Free PR list with Pro upsell placeholders dismissed by the user"
+        ),
+        screenshotSlide(
+          "pro-pr-list",
+          "Pro: PR list with Jira chips and one-click ticket finder",
+          "Workvane Pro PR list with Jira status chips and Find Jira ticket links on keyless PRs"
+        ),
+        screenshotSlide(
+          "pro-pr-state-chips",
+          "Pro: conflict and unresolved-thread chips",
+          "Workvane Pro PR list showing red Conflicts and amber unresolved-thread chips on a GitHub pull request row"
+        ),
+        screenshotSlide(
+          "pro-ticket-suggestions",
+          "Pro: ticket suggestions for keyless PRs",
+          "Workvane Pro suggesting Jira tickets on a GitHub pull request without a Jira key"
+        ),
+        screenshotSlide(
+          "pro-associated-pr",
+          "Pro: associated PR with full Jira context",
+          "Workvane Pro showing Jira status and assignee on a GitHub pull request after association"
+        ),
+        screenshotSlide(
+          "pro-transition-button",
+          "Pro: configurable Jira transition button",
+          "Workvane Pro rendering a configurable Jira transition button on a GitHub pull request page"
+        ),
+        screenshotSlide(
+          "pro-transition-complete",
+          "Pro: Jira transitions from the PR page",
+          "Workvane Pro showing a completed Jira transition action on a GitHub pull request"
+        ),
+        screenshotSlide(
+          "pro-list-transition-buttons",
+          "Pro: transition buttons on the PR list",
+          "Workvane Pro showing per-row Jira transition buttons across a GitHub pull request list"
+        ),
+        screenshotSlide(
+          "pro-transition-tester",
+          "Pro: transition tester on the dashboard",
+          "Workvane Pro dashboard running the transition-tester dry run against a Jira ticket"
+        ),
+      ];
 
       const screenshotModal = document.querySelector("#screenshot-modal");
       const screenshotModalImage = document.querySelector("#screenshot-modal-image");
-      const screenshotModalCaption = document.querySelector("#screenshot-modal-caption");
+      const screenshotModalCaptionText = document.querySelector("#screenshot-modal-caption-text");
+      const screenshotModalCounter = document.querySelector("#screenshot-modal-counter");
       const screenshotModalClose = document.querySelector(".image-modal-close");
+      const screenshotModalPrev = document.querySelector("[data-modal-prev]");
+      const screenshotModalNext = document.querySelector("[data-modal-next]");
       let screenshotReturnFocus = null;
+      let screenshotCurrentIndex = 0;
+
+      function showScreenshotSlide(index) {
+        const total = screenshotCarouselSlides.length;
+        if (!total) return;
+        // Wrap circularly so prev/next always advance.
+        screenshotCurrentIndex = ((index % total) + total) % total;
+        const slide = screenshotCarouselSlides[screenshotCurrentIndex];
+        screenshotModalImage.alt = slide.alt || "";
+        screenshotModalImage.dataset.fallbackSrc = _screenshotIsDark
+          ? slide.darkFallbackSrc
+          : slide.fallbackSrc;
+        screenshotModalImage.dataset.fallbackActive = "0";
+        screenshotModalImage.src = _screenshotIsDark ? slide.darkSrc : slide.src;
+        screenshotModalCaptionText.textContent = slide.caption || "";
+        screenshotModalCounter.textContent = `${screenshotCurrentIndex + 1} / ${total}`;
+      }
 
       function closeScreenshotModal() {
         if (!screenshotModal.classList.contains("open")) return;
@@ -1489,19 +1622,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
 
       function openScreenshotModal(figure) {
-        const image = figure.querySelector("img");
-        const caption = figure.querySelector("figcaption");
-        if (!image) return;
-
+        const raw = figure?.dataset?.carouselIndex;
+        const index = Number.isFinite(Number(raw)) ? Number(raw) : 0;
         screenshotReturnFocus = figure;
-        screenshotModalImage.alt = image.alt || "";
-        // Use the dark fallback when the site is currently in dark mode.
-        screenshotModalImage.dataset.fallbackSrc = (_screenshotIsDark && image.dataset.darkFallbackSrc)
-          ? image.dataset.darkFallbackSrc
-          : (image.dataset.fallbackSrc || "");
-        screenshotModalImage.dataset.fallbackActive = "0";
-        screenshotModalImage.src = image.src; // already the correct light/dark URL
-        screenshotModalCaption.textContent = caption?.textContent || "";
+        showScreenshotSlide(index);
         screenshotModal.classList.add("open");
         screenshotModal.setAttribute("aria-hidden", "false");
         document.body.classList.add("modal-open");
@@ -1514,22 +1638,122 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         screenshotModalImage.src = screenshotModalImage.dataset.fallbackSrc;
       });
 
-      document.querySelectorAll("[data-screenshot-modal]").forEach((figure) => {
-        figure.addEventListener("click", () => openScreenshotModal(figure));
-        figure.addEventListener("keydown", (event) => {
-          if (event.key !== "Enter" && event.key !== " ") return;
-          event.preventDefault();
-          openScreenshotModal(figure);
+      function bindScreenshotModalTriggers(figures) {
+        figures.forEach((figure) => {
+          if (figure.dataset.wvModalBound === "1") return;
+          figure.dataset.wvModalBound = "1";
+          figure.addEventListener("click", () => openScreenshotModal(figure));
+          figure.addEventListener("keydown", (event) => {
+            if (event.key !== "Enter" && event.key !== " ") return;
+            event.preventDefault();
+            openScreenshotModal(figure);
+          });
         });
-      });
+      }
+      bindScreenshotModalTriggers(document.querySelectorAll("[data-screenshot-modal]"));
 
       document.querySelectorAll("[data-modal-close]").forEach((control) => {
         control.addEventListener("click", closeScreenshotModal);
       });
 
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") closeScreenshotModal();
+      screenshotModalPrev?.addEventListener("click", (event) => {
+        event.stopPropagation();
+        showScreenshotSlide(screenshotCurrentIndex - 1);
       });
+      screenshotModalNext?.addEventListener("click", (event) => {
+        event.stopPropagation();
+        showScreenshotSlide(screenshotCurrentIndex + 1);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeScreenshotModal();
+          return;
+        }
+        if (!screenshotModal.classList.contains("open")) return;
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          showScreenshotSlide(screenshotCurrentIndex - 1);
+        } else if (event.key === "ArrowRight") {
+          event.preventDefault();
+          showScreenshotSlide(screenshotCurrentIndex + 1);
+        }
+      });
+
+      // Hero stack: rendered dynamically from a published screenshot manifest
+      // so reviewers can change which 3 screenshots are featured via PR
+      // comment ticks without editing this file. Falls back to the names in
+      // `data-hero-fallback` if the manifest can't be fetched.
+      const SCREENSHOT_MANIFEST_URL = `${SCREENSHOT_BASE}manifest.json`;
+      const HERO_POSITIONS = ["one", "two", "three"];
+
+      function findCarouselIndexByName(name) {
+        return screenshotCarouselSlides.findIndex((s) => s.src.endsWith(`/${name}`));
+      }
+
+      function renderHeroStack(filenames) {
+        const stack = document.getElementById("hero-stack");
+        if (!stack) return;
+        const figures = filenames
+          .slice(0, 3)
+          .map((name, i) => {
+            const idx = findCarouselIndexByName(name);
+            if (idx < 0) return null;
+            const slide = screenshotCarouselSlides[idx];
+            const fig = document.createElement("figure");
+            fig.className = `stack-shot ${HERO_POSITIONS[i] || ""}`;
+            fig.setAttribute("data-screenshot-modal", "");
+            fig.dataset.carouselIndex = String(idx);
+            fig.setAttribute("role", "button");
+            fig.setAttribute("tabindex", "0");
+            fig.setAttribute("aria-label", `Open screenshot: ${slide.caption}`);
+
+            const img = document.createElement("img");
+            img.src = _screenshotIsDark ? slide.darkSrc : slide.src;
+            img.dataset.lightSrc = slide.src;
+            img.dataset.darkSrc = slide.darkSrc;
+            img.dataset.fallbackSrc = slide.fallbackSrc;
+            img.dataset.darkFallbackSrc = slide.darkFallbackSrc;
+            img.alt = slide.alt;
+
+            const cap = document.createElement("figcaption");
+            cap.textContent = slide.caption;
+
+            fig.appendChild(img);
+            fig.appendChild(cap);
+            return fig;
+          })
+          .filter(Boolean);
+
+        stack.replaceChildren(...figures);
+        bindScreenshotModalTriggers(stack.querySelectorAll("[data-screenshot-modal]"));
+        bindScreenshotFallback(stack.querySelectorAll("img[data-fallback-src]"));
+      }
+
+      (async function loadHeroFromManifest() {
+        const stack = document.getElementById("hero-stack");
+        if (!stack) return;
+        const fallbackNames = (stack.dataset.heroFallback || "")
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean);
+        // Render the fallback first so the layout slot is reserved while we
+        // fetch — the manifest swap is then unnoticeable on most networks.
+        renderHeroStack(fallbackNames);
+        try {
+          const res = await fetch(SCREENSHOT_MANIFEST_URL, { cache: "no-cache" });
+          if (!res.ok) return;
+          const data = await res.json();
+          const heroNames = Array.isArray(data)
+            ? data
+                .filter((entry) => entry && entry.hero === true && typeof entry.fileName === "string")
+                .map((entry) => entry.fileName)
+            : [];
+          if (heroNames.length) renderHeroStack(heroNames);
+        } catch {
+          // Stick with the already-rendered fallback.
+        }
+      })();
 
       (function setupThemeToggle() {
         const THEME_KEY = "workvane-theme";
