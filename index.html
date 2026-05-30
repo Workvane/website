@@ -475,6 +475,43 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       max-height: calc(100vh - 126px);
       object-fit: contain;
       width: 100%;
+      transition: opacity 0.15s ease;
+    }
+
+    .image-modal-card.is-loading img {
+      opacity: 0.25;
+    }
+
+    .image-modal-spinner {
+      display: none;
+    }
+
+    .image-modal-card.is-loading .image-modal-spinner {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 38px;
+      height: 38px;
+      margin: -19px 0 0 -19px;
+      border: 3px solid rgba(255, 255, 255, 0.25);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: wv-modal-spin 0.8s linear infinite;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    @keyframes wv-modal-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .image-modal-card.is-loading .image-modal-spinner {
+        animation-duration: 2s;
+      }
     }
 
     .image-modal-card figcaption {
@@ -1439,6 +1476,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </svg>
         </button>
         <img id="screenshot-modal-image" alt="" />
+        <div class="image-modal-spinner" aria-hidden="true"></div>
         <figcaption id="screenshot-modal-caption">
           <span id="screenshot-modal-caption-text"></span>
           <span class="image-modal-counter" id="screenshot-modal-counter" aria-live="polite"></span>
@@ -1582,9 +1620,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           "Pro: transition tester on the dashboard",
           "Workvane Pro dashboard running the transition-tester dry run against a Jira ticket"
         ),
+        screenshotSlide(
+          "pro-follow-up-popup",
+          "Pro: approve + create a follow-up Jira ticket",
+          "Workvane Pro adding an Approve and create follow-up Jira ticket option to GitHub's review popover"
+        ),
+        screenshotSlide(
+          "pro-follow-up-drawer",
+          "Pro: follow-up ticket form",
+          "Workvane Pro drawer for filing a follow-up Jira ticket linked to the approved GitHub pull request"
+        ),
       ];
 
       const screenshotModal = document.querySelector("#screenshot-modal");
+      const screenshotModalCard = document.querySelector(".image-modal-card");
       const screenshotModalImage = document.querySelector("#screenshot-modal-image");
       const screenshotModalCaptionText = document.querySelector("#screenshot-modal-caption-text");
       const screenshotModalCounter = document.querySelector("#screenshot-modal-counter");
@@ -1605,7 +1654,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           ? slide.darkFallbackSrc
           : slide.fallbackSrc;
         screenshotModalImage.dataset.fallbackActive = "0";
+        // Show the spinner until this slide's image finishes loading. The
+        // `load`/`error` handlers below clear it.
+        screenshotModalCard?.classList.add("is-loading");
         screenshotModalImage.src = _screenshotIsDark ? slide.darkSrc : slide.src;
+        // A cached image may already be complete (no `load` event to come), so
+        // clear the spinner immediately to avoid a stuck/flashing state.
+        if (screenshotModalImage.complete && screenshotModalImage.naturalWidth > 0) {
+          screenshotModalCard?.classList.remove("is-loading");
+        }
         screenshotModalCaptionText.textContent = slide.caption || "";
         screenshotModalCounter.textContent = `${screenshotCurrentIndex + 1} / ${total}`;
       }
@@ -1632,8 +1689,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         screenshotModalClose.focus();
       }
 
+      screenshotModalImage.addEventListener("load", () => {
+        screenshotModalCard?.classList.remove("is-loading");
+      });
+
       screenshotModalImage.addEventListener("error", () => {
-        if (!screenshotModalImage.dataset.fallbackSrc || screenshotModalImage.dataset.fallbackActive === "1") return;
+        if (!screenshotModalImage.dataset.fallbackSrc || screenshotModalImage.dataset.fallbackActive === "1") {
+          // No fallback left — stop the spinner rather than spin forever.
+          screenshotModalCard?.classList.remove("is-loading");
+          return;
+        }
+        // Swap to the local fallback; its own load/error clears the spinner.
         screenshotModalImage.dataset.fallbackActive = "1";
         screenshotModalImage.src = screenshotModalImage.dataset.fallbackSrc;
       });
@@ -1691,14 +1757,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         return screenshotCarouselSlides.findIndex((s) => s.src.endsWith(`/${name}`));
       }
 
+      // A manifest hero pick may not be in the curated carousel list (e.g. a
+      // newly added screenshot). Rather than silently drop it from the hero,
+      // synthesize a slide and append it so it renders and stays navigable in
+      // the modal. Idempotent: a subsequent lookup finds the appended slide.
+      function ensureCarouselSlide(name) {
+        const existing = findCarouselIndexByName(name);
+        if (existing >= 0) return existing;
+        const base = name.replace(/\.png$/, "");
+        const label = base
+          .replace(/[-_]/g, " ")
+          .replace(/\b\w/g, (c) => c.toUpperCase());
+        screenshotCarouselSlides.push(screenshotSlide(base, label, label));
+        return screenshotCarouselSlides.length - 1;
+      }
+
       function renderHeroStack(filenames) {
         const stack = document.getElementById("hero-stack");
         if (!stack) return;
         const figures = filenames
           .slice(0, 3)
           .map((name, i) => {
-            const idx = findCarouselIndexByName(name);
-            if (idx < 0) return null;
+            const idx = ensureCarouselSlide(name);
             const slide = screenshotCarouselSlides[idx];
             const fig = document.createElement("figure");
             fig.className = `stack-shot ${HERO_POSITIONS[i] || ""}`;
