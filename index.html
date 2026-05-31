@@ -802,6 +802,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       outline-offset: 2px;
     }
 
+    .card-cta-link {
+      align-self: flex-start;
+      margin-top: 16px;
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .card-cta-link:hover {
+      text-decoration: underline;
+    }
+
     .card {
       padding: 40px 32px;
       border-right: 1px dashed var(--border-color);
@@ -1377,6 +1389,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <div class="card-number">07</div>
               <h3>Approve with a follow-up Jira ticket</h3>
               <p>Pro adds an "Approve + create follow-up Jira ticket" option to GitHub's review form. After approving, a side drawer opens to file the follow-up ticket — project, title, description, labels — pre-linked to both the PR and the ticket the PR was working on.</p>
+            </article>
+            <article class="card card-cta">
+              <div class="card-number">08</div>
+              <h3>What should we build next?</h3>
+              <p>Workvane is in beta and shaped by the people using it. Tell us which workflow friction to kill next — your request could be the next card on this page.</p>
+              <a class="card-cta-link" href="#feedback">Request a feature →</a>
             </article>
           </div>
         </div>
