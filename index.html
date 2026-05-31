@@ -821,7 +821,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       border-right: none;
     }
 
-    .card:nth-child(n+4) {
+    /* Remove the bottom border only from the cards in the *last* row, whatever
+       the total count. Selects the first card of the last row (a 3n+1 card
+       within the final three) and its row-mates, so an orphan final card (e.g.
+       a 7th) still gets a separator line above it. */
+    .card:nth-child(3n + 1):nth-last-child(-n + 3),
+    .card:nth-child(3n + 1):nth-last-child(-n + 3) ~ .card {
       border-bottom: none;
     }
 
