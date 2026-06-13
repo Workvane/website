@@ -1038,6 +1038,49 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       flex-shrink: 0;
     }
 
+    .price-interval {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0;
+    }
+
+    .price-annual {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin: -12px 0 24px;
+    }
+
+    .price-annual strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Demo Video */
+    .demo-frame {
+      max-width: 960px;
+      margin: 0 auto;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--bg-elevated);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+    }
+
+    .demo-frame video {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .demo-caption {
+      max-width: 960px;
+      margin: 16px auto 0;
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
     .team-cta {
       display: flex;
       align-items: center;
@@ -1248,6 +1291,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="nav-links">
           <a href="#winds">Winds</a>
           <a href="#jira-github">Jira + GitHub</a>
+          <a href="#demo">Demo</a>
           <a href="#features">Features</a>
           <a href="#pricing">Pricing</a>
           <a href="#feedback">Feedback</a>
@@ -1338,6 +1382,41 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </section>
 
+      <!-- Demo Section -->
+      <section class="section-base" id="demo">
+        <div class="section-separator" aria-hidden="true">
+          <div class="section-separator-line"></div>
+          <span class="section-separator-label">Demo</span>
+          <div class="section-separator-line"></div>
+        </div>
+        <div class="container section-content">
+          <div class="section-head center reveal">
+            <p class="eyebrow">See it in action</p>
+            <h2>From Jira-blind PR list to one-click workflow.</h2>
+            <p>
+              A short walkthrough: Free Jira status and assignee chips, then the
+              Pro flow — ticket suggestions for keyless PRs, one-click
+              transitions, and merge-blocker flags, all without leaving GitHub.
+            </p>
+          </div>
+          <div class="demo-frame reveal">
+            <video
+              controls
+              playsinline
+              preload="metadata"
+              poster="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/e2e/pro-ticket-suggestions.png">
+              <source src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/demo/workvane-demo.webm" type="video/webm" />
+              <source src="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/demo/workvane-demo.mp4" type="video/mp4" />
+              Your browser doesn't support embedded video.
+              <a href="https://xwbcjrtrfzkyafniskjk.supabase.co/storage/v1/object/public/Assets/demo/workvane-demo.mp4">Download the demo</a>.
+            </video>
+          </div>
+          <p class="demo-caption reveal">
+            Recorded against a live GitHub pull-request list.
+          </p>
+        </div>
+      </section>
+
       <!-- Features Section -->
       <section class="section-base" id="features">
         <div class="section-separator" aria-hidden="true">
@@ -1388,7 +1467,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <article class="card" data-feature-shot="pro-follow-up-popup">
               <div class="card-number">07</div>
               <h3>Approve with a follow-up Jira ticket</h3>
-              <p>Pro adds an "Approve + create follow-up Jira ticket" option to GitHub's review form. After approving, a side drawer opens to file the follow-up ticket — project, title, description, labels — pre-linked to both the PR and the ticket the PR was working on.</p>
+              <p>Pro adds an "Approve + create follow-up Jira ticket" option to GitHub's review form. After approving, a side drawer opens to file the follow-up ticket — project, issue type, title, description, labels — pre-linked to both the PR and the ticket the PR was working on.</p>
             </article>
             <article class="card card-cta">
               <div class="card-number">08</div>
@@ -1464,7 +1543,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <article class="price-card featured reveal">
               <h3>Pro</h3>
               <p>For teams and solo devs who move tickets from GitHub.</p>
-              <div class="price-amount">TBD</div>
+              <div class="price-amount">$5<span class="price-interval">/mo</span></div>
+              <p class="price-annual">or <strong>$48/year</strong> — save 20%</p>
               <a class="button button-gradient" style="width: 100%;" href="#feedback">Request Pro access</a>
               <ul>
                 <li>Unlimited conditional transition actions</li>
