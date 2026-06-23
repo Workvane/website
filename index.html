@@ -1600,7 +1600,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <h3>Need Pro for a team?</h3>
               <p>Team billing and shared workflow presets are available for early customers.</p>
             </div>
-            <a class="button button-primary" href="mailto:workvane@leog.me?subject=Workvane%20team%20billing">Talk about team Pro</a>
+            <a class="button button-primary js-mail" data-eml="d29ya3ZhbmVAbGVvZy5tZQ==" data-subject="Workvane%20team%20billing" href="#" rel="nofollow">Talk about team Pro</a>
           </div>
         </div>
       </section>
@@ -1621,7 +1621,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               should shape the first public Chrome Web Store release.
             </p>
             <div class="hero-actions">
-              <a class="button button-primary" href="mailto:workvane@leog.me?subject=Workvane%20feature%20suggestion">Suggest a feature</a>
+              <a class="button button-primary js-mail" data-eml="d29ya3ZhbmVAbGVvZy5tZQ==" data-subject="Workvane%20feature%20suggestion" href="#" rel="nofollow">Suggest a feature</a>
               <a class="button button-secondary" href="https://leog.me" target="_blank" rel="noopener">Contact Leo</a>
             </div>
           </div>
@@ -2151,6 +2151,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           current = ORDER[(ORDER.indexOf(current) + 1) % ORDER.length];
           apply(current);
         });
+      })();
+    </script>
+    <!-- Assemble mailto links in JS so the address is never in the served HTML
+         (defeats email-harvesting bots that scrape static pages). -->
+    <script>
+      (function () {
+        function reveal() {
+          document.querySelectorAll("a.js-mail").forEach(function (a) {
+            try {
+              var eml = atob(a.getAttribute("data-eml"));
+              var href = "mailto:" + eml;
+              var subj = a.getAttribute("data-subject");
+              if (subj) href += "?subject=" + subj;
+              a.setAttribute("href", href);
+              if (a.hasAttribute("data-show")) a.textContent = eml;
+            } catch (e) {}
+          });
+        }
+        if (document.readyState !== "loading") reveal();
+        else document.addEventListener("DOMContentLoaded", reveal);
       })();
     </script>
   </body>
