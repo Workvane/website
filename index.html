@@ -1056,6 +1056,40 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       font-weight: 600;
     }
 
+    .billing-toggle {
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      margin: 0 0 20px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface-muted, rgba(127, 127, 127, 0.08));
+    }
+
+    .billing-toggle-option {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      transition: color 0.2s ease, background 0.2s ease;
+    }
+
+    .billing-toggle-option.is-active {
+      color: var(--text-strong, #fff);
+      background: var(--accent);
+    }
+
+    .billing-save {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
     /* Demo Video */
     .demo-frame {
       max-width: 960px;
@@ -1543,9 +1577,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <article class="price-card featured reveal">
               <h3>Pro</h3>
               <p>For teams and solo devs who move tickets from GitHub.</p>
-              <div class="price-amount">$5<span class="price-interval">/mo</span></div>
-              <p class="price-annual">or <strong>$48/year</strong> — save 20%</p>
-              <a class="button button-gradient" style="width: 100%;" href="#feedback">Request Pro access</a>
+              <div class="billing-toggle" role="group" aria-label="Billing cycle">
+                <button type="button" class="billing-toggle-option is-active" data-plan="monthly">Monthly</button>
+                <button type="button" class="billing-toggle-option" data-plan="annual">Annual <span class="billing-save">−20%</span></button>
+              </div>
+              <div class="price-amount" data-price-amount>$5<span class="price-interval" data-price-interval>/mo</span></div>
+              <p class="price-annual" data-price-note>Billed monthly. Switch to annual to save 20%.</p>
+              <a class="button button-gradient" style="width: 100%;" href="#feedback" data-pro-cta>Get Pro — Monthly</a>
               <ul>
                 <li>Unlimited conditional transition actions</li>
                 <li>Configurable status colors and aliases</li>
@@ -1643,6 +1681,43 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         el.style.transitionDelay = `${Math.min(index * 50, 200)}ms`;
         observer.observe(el);
       });
+
+      // Pricing monthly/annual toggle. Paste the Lemon Squeezy hosted checkout
+      // URLs below once the Pro variants exist (Store → product → Share → copy
+      // each variant's buy link). Until then the CTA falls back to #feedback.
+      // Per-variant Lemon Squeezy buy links (the UUID is each variant's slug),
+      // so the toggle lands the buyer on the matching plan already selected.
+      const PRO_CHECKOUT_URLS = {
+        monthly: "https://workvane.lemonsqueezy.com/checkout/buy/979922ad-a410-43b7-83ca-fd017ed47774",
+        annual: "https://workvane.lemonsqueezy.com/checkout/buy/7b879daa-ce2c-4ced-9bc3-99c8204e3c84",
+      };
+      const PRO_PLANS = {
+        monthly: { amount: "$5", interval: "/mo", note: "Billed monthly. Switch to annual to save 20%.", cta: "Get Pro — Monthly" },
+        annual: { amount: "$48", interval: "/yr", note: "Billed yearly — two months free vs. monthly.", cta: "Get Pro — Annual" },
+      };
+      (function initBillingToggle() {
+        const options = document.querySelectorAll(".billing-toggle-option");
+        const amountEl = document.querySelector("[data-price-amount]");
+        const intervalEl = document.querySelector("[data-price-interval]");
+        const noteEl = document.querySelector("[data-price-note]");
+        const cta = document.querySelector("[data-pro-cta]");
+        if (!options.length || !amountEl || !cta) return;
+
+        function selectPlan(plan) {
+          const config = PRO_PLANS[plan];
+          if (!config) return;
+          amountEl.childNodes[0].nodeValue = config.amount;
+          if (intervalEl) intervalEl.textContent = config.interval;
+          if (noteEl) noteEl.textContent = config.note;
+          cta.textContent = config.cta;
+          cta.href = PRO_CHECKOUT_URLS[plan] || "#feedback";
+          options.forEach((opt) => opt.classList.toggle("is-active", opt.dataset.plan === plan));
+        }
+
+        options.forEach((opt) => {
+          opt.addEventListener("click", () => selectPlan(opt.dataset.plan));
+        });
+      })();
 
       // Theme-aware screenshot switching. Each <img data-dark-src> carries both
       // a light and a dark URL; applyScreenshotScheme swaps src when the user
