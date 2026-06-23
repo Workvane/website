@@ -229,7 +229,7 @@
       <h2>8. Contact</h2>
       <p>
         Questions, data requests, or deletion requests:
-        <a href="mailto:hello@leog.me">hello@leog.me</a>.
+        <a class="js-mail" data-eml="d29ya3ZhbmVAbGVvZy5tZQ==" data-show href="#" rel="nofollow">email us</a><noscript> (workvane at leog dot me)</noscript>.
       </p>
     </main>
 
@@ -242,5 +242,25 @@
         <p>Built by <a href="https://leog.me" target="_blank" rel="noopener">Leo Giovanetti</a></p>
       </div>
     </footer>
+    <!-- Assemble the mailto link in JS so the address is never in the served
+         HTML (defeats email-harvesting bots that scrape static pages). -->
+    <script>
+      (function () {
+        function reveal() {
+          document.querySelectorAll("a.js-mail").forEach(function (a) {
+            try {
+              var eml = atob(a.getAttribute("data-eml"));
+              var href = "mailto:" + eml;
+              var subj = a.getAttribute("data-subject");
+              if (subj) href += "?subject=" + subj;
+              a.setAttribute("href", href);
+              if (a.hasAttribute("data-show")) a.textContent = eml;
+            } catch (e) {}
+          });
+        }
+        if (document.readyState !== "loading") reveal();
+        else document.addEventListener("DOMContentLoaded", reveal);
+      })();
+    </script>
   </body>
 </html>
