@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy — Workvane</title>
+    <meta name="description" content="How the Workvane browser extension handles your data: what is stored locally, what is stored in the cloud, and the third parties involved." />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet" />
+    <script>
+      (function () {
+        try {
+          var pref = localStorage.getItem("workvane-theme");
+          if (pref === "light" || pref === "dark") {
+            document.documentElement.setAttribute("data-theme", pref);
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        color-scheme: light dark;
+        --bg-base: light-dark(#fafafa, #0a0a0a);
+        --bg-card: light-dark(#ffffff, #171717);
+        --bg-subtle: light-dark(#f4f4f5, #1a1a1a);
+        --text-primary: light-dark(#18181b, #ededed);
+        --text-muted: light-dark(#52525b, #888888);
+        --border-color: light-dark(#e4e4e7, #2a2a2a);
+        --border-subtle: light-dark(#ececef, #222222);
+        --accent: light-dark(#2563eb, #3b82f6);
+        --gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        --nav-bg: light-dark(rgba(250, 250, 250, 0.85), rgba(10, 10, 10, 0.8));
+      }
+      :root[data-theme="light"] { color-scheme: light; }
+      :root[data-theme="dark"] { color-scheme: dark; }
+
+      html { scroll-behavior: smooth; }
+      body {
+        background: var(--bg-base);
+        color: var(--text-primary);
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: var(--accent); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+
+      .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+      nav {
+        position: sticky; top: 0; z-index: 100;
+        border-bottom: 1px solid var(--border-subtle);
+        background: var(--nav-bg);
+        backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      }
+      nav .inner {
+        display: flex; align-items: center; justify-content: space-between; min-height: 64px;
+      }
+      .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); }
+      .brand:hover { text-decoration: none; }
+      .mark { font-size: 1.5rem; line-height: 1; }
+      .nav-back { color: var(--text-muted); font-size: 0.875rem; transition: color 0.15s; }
+      .nav-back:hover { color: var(--text-primary); text-decoration: none; }
+
+      main { max-width: 760px; margin: 0 auto; padding: 64px 24px 96px; }
+
+      .eyebrow {
+        font-family: "Geist Mono", ui-monospace, monospace;
+        font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+        text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+      }
+      h1 {
+        font-size: clamp(2rem, 5vw, 2.75rem); font-weight: 800;
+        letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 12px;
+      }
+      .updated { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 8px; }
+      .intro { color: var(--text-muted); font-size: 1.05rem; margin: 24px 0 8px; }
+
+      h2 {
+        font-size: 1.3rem; font-weight: 700; letter-spacing: -0.01em;
+        margin: 44px 0 14px; padding-top: 8px;
+      }
+      h3 { font-size: 1.02rem; font-weight: 600; margin: 24px 0 8px; }
+      p { margin: 0 0 14px; }
+      ul { margin: 0 0 14px; padding-left: 22px; }
+      li { margin-bottom: 8px; }
+      strong { color: var(--text-primary); font-weight: 600; }
+
+      .callout {
+        border: 1px solid var(--border-color);
+        border-left: 3px solid var(--accent);
+        background: var(--bg-card);
+        border-radius: 10px; padding: 16px 18px; margin: 20px 0;
+        font-size: 0.96rem;
+      }
+      table {
+        width: 100%; border-collapse: collapse; margin: 16px 0 22px; font-size: 0.92rem;
+      }
+      th, td {
+        text-align: left; vertical-align: top; padding: 10px 12px;
+        border-bottom: 1px solid var(--border-subtle);
+      }
+      th { font-weight: 600; color: var(--text-primary); }
+      td { color: var(--text-muted); }
+      td code, p code {
+        font-family: "Geist Mono", ui-monospace, monospace; font-size: 0.85em;
+        background: var(--bg-subtle); padding: 1px 6px; border-radius: 5px; color: var(--text-primary);
+      }
+
+      footer { border-top: 1px solid var(--border-subtle); padding: 32px 0; }
+      footer .inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+      footer p, footer a { color: var(--text-muted); font-size: 0.875rem; }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="container inner">
+        <a class="brand" href="/index.html">
+          <span class="mark">༄</span>
+          <span>Workvane</span>
+        </a>
+        <a class="nav-back" href="/index.html">← Back to Workvane</a>
+      </div>
+    </nav>
+
+    <main>
+      <p class="eyebrow">Legal</p>
+      <h1>Privacy Policy</h1>
+      <p class="updated">Last updated: June 23, 2026</p>
+
+      <p class="intro">
+        Workvane is a browser extension that surfaces Jira Cloud state and workflow actions
+        inside GitHub pull requests. This policy explains what data the extension handles,
+        what stays on your device, what is stored in the cloud, and the third parties
+        involved. We collect as little as possible.
+      </p>
+
+      <div class="callout">
+        <strong>The short version:</strong> Your Jira credentials and extension settings never
+        leave your browser. The only data we store in the cloud is the minimum needed to sign
+        you in and remember whether you have a paid subscription. We do not sell your data, run
+        ad trackers, or read your browsing history.
+      </div>
+
+      <h2>1. Data stored only on your device</h2>
+      <p>
+        The following is kept in your browser's local extension storage
+        (<code>chrome.storage</code>) and is <strong>never transmitted to Workvane's
+        servers</strong>:
+      </p>
+      <ul>
+        <li><strong>Jira connection settings</strong> — your Jira domain, email, and API token. These are used by the extension to call your Jira Cloud directly from your browser.</li>
+        <li><strong>Extension configuration</strong> — project keys, repository allowlist, status colors, and transition button definitions.</li>
+        <li><strong>PR ↔ ticket associations</strong> — local mappings between pull requests and Jira issues you've linked.</li>
+        <li><strong>A cached subscription token</strong> — a short-lived signed grant used to unlock Pro features offline.</li>
+      </ul>
+      <p>Clearing the extension's storage or removing the extension deletes all of this.</p>
+
+      <h2>2. Data stored in the cloud</h2>
+      <p>
+        To sign you in and manage subscriptions, we store a small amount of account data on our
+        backend (hosted on Supabase):
+      </p>
+      <ul>
+        <li><strong>Account identity</strong> — your user ID and email address from the GitHub account you sign in with.</li>
+        <li><strong>Subscription status</strong> — whether you have an active Pro subscription, the plan, and renewal/expiry dates, received from our payment processor.</li>
+      </ul>
+      <p>
+        We do <strong>not</strong> store your Jira credentials, your code, your pull request
+        contents, or your Jira ticket contents on our servers.
+      </p>
+
+      <h2>3. Third-party services</h2>
+      <p>The extension communicates directly with these services on your behalf:</p>
+      <table>
+        <thead>
+          <tr><th>Service</th><th>Purpose</th><th>Data involved</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>GitHub</td><td>Sign-in (OAuth) and reading pull-request state (mergeable status, review threads)</td><td>Your GitHub identity and PR metadata for repositories you view</td></tr>
+          <tr><td>Atlassian / Jira Cloud</td><td>Reading ticket state and performing workflow transitions you trigger</td><td>Requests authenticated with your own Jira API token, sent from your browser</td></tr>
+          <tr><td>Supabase</td><td>Authentication and storing account + subscription status</td><td>Your account ID, email, and entitlement record</td></tr>
+          <tr><td>Lemon Squeezy</td><td>Payment processing for Pro subscriptions</td><td>Your billing details are handled entirely by Lemon Squeezy; Workvane never sees your card data</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Each service has its own privacy policy governing the data it processes. Payments and
+        card data are handled by Lemon Squeezy as the merchant of record.
+      </p>
+
+      <h2>4. Browser permissions</h2>
+      <p>The extension requests only the permissions it needs to function:</p>
+      <ul>
+        <li><strong>Storage</strong> — to save your settings and connection details on your device.</li>
+        <li><strong>Tabs</strong> — to detect when a checkout completes and to open the settings/dashboard page.</li>
+        <li><strong>Identity</strong> — to run the GitHub sign-in flow.</li>
+        <li><strong>Access to github.com</strong> — to display Jira chips and actions on pull-request pages and read PR state.</li>
+        <li><strong>Optional access to your Atlassian site</strong> — requested only when you connect Jira, to read ticket data and apply transitions.</li>
+      </ul>
+
+      <h2>5. What we don't do</h2>
+      <ul>
+        <li>We don't sell or rent your personal data.</li>
+        <li>We don't use advertising or cross-site tracking in the extension.</li>
+        <li>We don't read pages other than GitHub pull-request pages.</li>
+        <li>We don't collect your browsing history.</li>
+      </ul>
+
+      <h2>6. Data retention and deletion</h2>
+      <p>
+        On-device data exists only until you clear it or uninstall the extension. Cloud account
+        data is retained while your account is active. To delete your account and associated
+        cloud data, email us at the address below and we'll remove it.
+      </p>
+
+      <h2>7. Changes to this policy</h2>
+      <p>
+        We may update this policy as the product evolves. Material changes will be reflected by
+        updating the "Last updated" date above.
+      </p>
+
+      <h2>8. Contact</h2>
+      <p>
+        Questions, data requests, or deletion requests:
+        <a href="mailto:hello@leog.me">hello@leog.me</a>.
+      </p>
+    </main>
+
+    <footer>
+      <div class="container inner">
+        <a class="brand" href="/index.html">
+          <span class="mark">༄</span>
+          <span>Workvane</span>
+        </a>
+        <p>Built by <a href="https://leog.me" target="_blank" rel="noopener">Leo Giovanetti</a></p>
+      </div>
+    </footer>
+  </body>
+</html>
