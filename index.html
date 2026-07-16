@@ -10,9 +10,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <!-- End Google Tag Manager -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Workvane — Development tools for workflow control</title>
+    <title>See &amp; Change Jira Status in GitHub Pull Requests — Workvane</title>
     <meta name="description"
-      content="Workvane builds Winds: focused development tools that connect source code, tickets, and workflow state. The first Wind brings Jira controls into GitHub pull requests." />
+      content="See Jira status and assignees on every GitHub pull request, filter your PR list by Jira state, and move tickets through your workflow — without leaving GitHub. Free Chrome extension." />
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico"
       data-light="/images/favicon.ico" data-dark="/images/favicon-dark.ico" />
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"
@@ -24,15 +24,39 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <link rel="manifest" href="/images/site.webmanifest"
       data-light="/images/site.webmanifest" data-dark="/images/site-dark.webmanifest" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Workvane — Development tools for workflow control" />
+    <meta property="og:url" content="https://workvane.com/" />
+    <meta property="og:title" content="Workvane — Jira status &amp; workflow actions inside GitHub PRs" />
     <meta property="og:description"
-      content="Workvane builds Winds: focused development tools that connect source code, tickets, and workflow state. The first Wind brings Jira controls into GitHub pull requests." />
-    <meta property="og:image" content="/images/android-chrome-512x512.png" />
+      content="See Jira status and assignees on every GitHub pull request, filter your PR list by Jira state, and move tickets through your workflow — without leaving GitHub." />
+    <meta property="og:image" content="https://workvane.com/images/og-card.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="A GitHub pull-request list before and after Workvane: bare rows become rows with Jira status, assignees, merge-blocker flags, and one-click transitions." />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Workvane — Development tools for workflow control" />
+    <meta name="twitter:title" content="Workvane — Jira status &amp; workflow actions inside GitHub PRs" />
     <meta name="twitter:description"
-      content="Workvane builds Winds: focused development tools that connect source code, tickets, and workflow state. The first Wind brings Jira controls into GitHub pull requests." />
-    <meta name="twitter:image" content="/images/android-chrome-512x512.png" />
+      content="See Jira status and assignees on every GitHub pull request, filter your PR list by Jira state, and move tickets through your workflow — without leaving GitHub." />
+    <meta name="twitter:image" content="https://workvane.com/images/og-card.png" />
+    <meta name="twitter:image:alt" content="A GitHub pull-request list before and after Workvane: Jira status, assignees, blockers, and one-click transitions." />
+    <link rel="canonical" href="https://workvane.com/" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Workvane: Jira + GitHub Wind",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Chrome",
+        "url": "https://workvane.com/",
+        "downloadUrl": "https://chromewebstore.google.com/detail/gcnehphpcpfjjoggebljfnhmnfgmalja",
+        "description": "See Jira status and assignees on every GitHub pull request, filter your PR list by Jira state, and move tickets through your workflow — without leaving GitHub.",
+        "offers": [
+          { "@type": "Offer", "price": "0", "priceCurrency": "USD", "name": "Free" },
+          { "@type": "Offer", "price": "5", "priceCurrency": "USD", "name": "Pro Monthly" },
+          { "@type": "Offer", "price": "48", "priceCurrency": "USD", "name": "Pro Annual" }
+        ],
+        "publisher": { "@type": "Organization", "name": "Workvane", "url": "https://workvane.com/" }
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -94,6 +118,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     a {
       color: inherit;
       text-decoration: none;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
     }
 
     .container {
@@ -1348,11 +1384,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="container hero-grid">
           <div class="reveal">
             <p class="eyebrow">Development tools for workflow control</p>
-            <h1>Work<span class="gradient-text">vane</span></h1>
+            <h1>Work<span class="gradient-text">vane</span><span class="sr-only"> — See and change Jira status inside GitHub pull requests</span></h1>
             <p class="hero-text">
-              Workvane builds Winds: focused tools that connect source code,
-              tickets, and release state where engineering decisions already
-              happen.
+              See Jira status and assignees on every GitHub pull request,
+              filter your PR list by Jira state, and move tickets through your
+              workflow with one click — without leaving GitHub.
             </p>
             <div class="hero-actions">
               <a class="button button-gradient" href="#jira-github">Explore first Wind</a>
@@ -1868,7 +1904,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         // Wrap circularly so prev/next always advance.
         screenshotCurrentIndex = ((index % total) + total) % total;
         const slide = screenshotCarouselSlides[screenshotCurrentIndex];
-        screenshotModalImage.alt = slide.alt || "";
+        screenshotModalImage.alt = slide.alt || slide.caption || "Workvane: Jira status inside a GitHub pull request";
         screenshotModalImage.dataset.fallbackSrc = _screenshotIsDark
           ? slide.darkFallbackSrc
           : slide.fallbackSrc;
@@ -1960,7 +1996,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           img.dataset.darkSrc = slide.darkSrc;
           img.dataset.fallbackSrc = slide.fallbackSrc;
           img.dataset.darkFallbackSrc = slide.darkFallbackSrc;
-          img.alt = slide.alt;
+          img.alt = slide.alt || slide.caption || "Workvane: Jira status inside a GitHub pull request";
           fig.appendChild(img);
           card.prepend(fig);
         });
@@ -2045,7 +2081,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             img.dataset.darkSrc = slide.darkSrc;
             img.dataset.fallbackSrc = slide.fallbackSrc;
             img.dataset.darkFallbackSrc = slide.darkFallbackSrc;
-            img.alt = slide.alt;
+            img.alt = slide.alt || slide.caption || "Workvane: Jira status inside a GitHub pull request";
 
             const cap = document.createElement("figcaption");
             cap.textContent = slide.caption;

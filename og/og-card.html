@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; }
+  body {
+    font-family: -apple-system, "SF Pro Display", "Inter", system-ui, sans-serif;
+    color: #ededed;
+    background:
+      radial-gradient(900px 500px at 82% -8%, rgba(139,92,246,0.22), transparent 60%),
+      radial-gradient(760px 520px at 8% 108%, rgba(59,130,246,0.20), transparent 55%),
+      #0a0b0f;
+    display: flex;
+    align-items: stretch;
+    height: 630px;
+    min-height: 630px;
+  }
+
+  /* ---- Left brand panel ---- */
+  .left {
+    width: 452px;
+    height: 630px;
+    min-height: 630px;
+    flex: 0 0 452px;
+    padding: 54px 40px 50px 58px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+  .wordmark { font-size: 34px; font-weight: 800; letter-spacing: -0.5px; }
+  .wordmark .g {
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .eyebrow {
+    margin-top: 30px;
+    font-size: 13px; font-weight: 600; letter-spacing: 2.4px;
+    text-transform: uppercase; color: #8b93a7;
+  }
+  h1 {
+    margin-top: 15px;
+    font-size: 40px; line-height: 1.1; font-weight: 800; letter-spacing: -1px;
+  }
+  h1 .accent {
+    background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .sub {
+    margin-top: 18px; font-size: 18px; line-height: 1.48; color: #aab2c2;
+    max-width: 348px;
+  }
+  .foot { display: flex; align-items: center; gap: 14px; }
+  .url { font-size: 19px; font-weight: 700; color: #cdd4e0; }
+  .pill {
+    font-size: 13px; font-weight: 700; letter-spacing: .3px;
+    padding: 6px 12px; border-radius: 999px;
+    color: #c7d2fe; background: rgba(99,102,241,0.16);
+    border: 1px solid rgba(129,140,248,0.35);
+  }
+
+  /* ---- Right preview panel ---- */
+  .right {
+    flex: 1;
+    padding: 46px 48px 46px 40px;
+    display: flex; flex-direction: column; justify-content: center;
+    gap: 12px;
+  }
+  .frame {
+    border-radius: 12px; overflow: hidden;
+    border: 1px solid #262b36;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+    background: #0d1117;
+  }
+  .bar {
+    height: 34px; display: flex; align-items: center; gap: 8px;
+    padding: 0 14px; background: #161b22; border-bottom: 1px solid #21262d;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; } .dot.y { background: #febc2e; } .dot.g { background: #28c840; }
+  .tag {
+    margin-left: 8px; font-size: 13px; font-weight: 700; letter-spacing: .4px;
+    color: #9aa4b6;
+  }
+  .tag b { color: #e6e9ef; }
+  .tag.after b { color: #a7f3d0; }
+  .shot { width: 100%; background-repeat: no-repeat; background-size: 100% auto; background-position: 0 -139px; }
+  .shot.before { height: 116px; background-image: url("before.png"); }
+  .shot.after  { height: 212px; background-image: url("pro-list-transition-buttons-dark.png"); }
+
+  .arrow {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-size: 14px; font-weight: 700; color: #8b93a7; letter-spacing: .3px;
+  }
+  .arrow .chev {
+    font-size: 15px;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+</style>
+</head>
+<body>
+  <div class="left">
+    <div class="top">
+      <div class="wordmark">Work<span class="g">vane</span></div>
+      <div class="eyebrow">Chrome extension · Jira Cloud + GitHub</div>
+      <h1>See &amp; move <span class="accent">Jira tickets</span> inside GitHub PRs</h1>
+      <div class="sub">Status, assignees, merge blockers, and one-click transitions — right on the pull-request list.</div>
+    </div>
+    <div class="foot">
+      <span class="url">workvane.com</span>
+      <span class="pill">Free · token stays local</span>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="frame">
+      <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="tag">BEFORE — <b>Jira-blind PR list</b></span></div>
+      <div class="shot before"></div>
+    </div>
+    <div class="arrow"><span class="chev">▼</span> add Workvane <span class="chev">▼</span></div>
+    <div class="frame">
+      <div class="bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="tag after">AFTER — <b>status, blockers &amp; actions</b></span></div>
+      <div class="shot after"></div>
+    </div>
+  </div>
+</body>
+</html>
